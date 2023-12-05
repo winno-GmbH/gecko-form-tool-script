@@ -66,6 +66,8 @@ document.addEventListener("DOMContentLoaded", function () {
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
+    alert("Form Submit");
+
     // Get all form elements
     const formElements = form.elements;
 
