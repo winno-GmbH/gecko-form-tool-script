@@ -54,10 +54,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (element.type === "select-one") {
       element.addEventListener("change", (event) => {
         if (element.required && element.value.trim() === "") {
-          element.closest(".cmp--sl").classList.add("error");
+          element.closest(".cmp--se").classList.add("error");
           return;
         }
-        element.closest(".cmp--sl").classList.remove("error");
+        element.closest(".cmp--se").classList.remove("error");
       });
     }
   }
