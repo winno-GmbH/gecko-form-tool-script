@@ -1,0 +1,15 @@
+name: Purge jsDelivr Cache
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  purge-cache:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Purge jsDelivr Cache
+        run: |
+          curl "https://purge.jsdelivr.net/gh/winno-GmbH/gecko-form-tool-script@main/script.js"
