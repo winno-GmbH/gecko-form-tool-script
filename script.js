@@ -54,10 +54,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (element.type === "select-one") {
       element.addEventListener("change", (event) => {
         if (element.required && element.value.trim() === "") {
-          element.closest(".cmp--sl").classList.add("error");
+          element.closest(".cmp--se").classList.add("error");
           return;
         }
-        element.closest(".cmp--sl").classList.remove("error");
+        element.closest(".cmp--se").classList.remove("error");
       });
     }
   }
@@ -65,6 +65,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Form submit handler
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+
+    alert("Form Submit");
 
     // Get all form elements
     const formElements = form.elements;
@@ -135,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("Form Submit + Data: " + JSON.stringify(requestData));
 
-    var serverUrl = "http://68.183.68.73:5000/api/forms/submit";
+    var serverUrl = "https://68.183.68.73:5000/api/forms/submit";
 
     var requestOptions = {
       method: "POST",
@@ -147,8 +149,12 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // form.innerHTML = "<div class='mainForm'><h2>Sending data...</h2></div>";
-    document.querySelector("input[type='submit']").value =
-      document.querySelector("input[type='submit']").dataset["wait"];
+
+    const submitButton = document.querySelector("input[type='submit']");
+
+    if (submitButton) {
+      submitButton.value = submitButton.dataset["wait"];
+    }
 
     // Make the fetch request
     fetch(serverUrl, requestOptions)
@@ -163,8 +169,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Handle the successful response data
         console.log("Data sent successfully:", data);
         //form.innerHTML = "<div class='mainForm'><h2>Data was sent successfully</h2></div>";
-        document.querySelector("input[type='submit']").value = "Data was sent!";
-        document.querySelector("input[type='submit']").disabled = true;
+        submitButton.value = "Data was sent!";
+        submitButton.disabled = true;
       })
       .catch((error) => {
         // Handle errors during the fetch request
