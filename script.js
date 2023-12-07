@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
       element.type === "number"
     ) {
       element.addEventListener("focus", (event) => {
+        element.closest(".cmp--tf").classList.remove("error");
         element.closest(".cmp--tf").classList.add("focus");
       });
 
@@ -53,19 +54,29 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       element.addEventListener("input", (event) => {
-        //console.log(element.value);
-        if (element.required && element.value.trim() === "") {
+        if (element.value.trim() === "") {
           element.closest(".cmp--tf").classList.remove("filled");
+        } else {
+          element.closest(".cmp--tf").classList.add("filled");
+        }
+
+        if (element.required && element.value.trim() === "") {
           element.closest(".cmp--tf").classList.add("error");
           return; // Stop submission if a required field is empty
         } else {
           element.closest(".cmp--tf").classList.remove("error");
-          element.closest(".cmp--tf").classList.add("filled");
         }
       });
     }
     if (element.type === "select-one") {
       element.addEventListener("change", (event) => {
+        if (element.required && element.value.trim() === "") {
+          element.closest(".cmp--se").classList.add("error");
+          return;
+        }
+        element.closest(".cmp--se").classList.remove("error");
+      });
+      element.addEventListener("blur", (event) => {
         if (element.required && element.value.trim() === "") {
           element.closest(".cmp--se").classList.add("error");
           return;
@@ -94,7 +105,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (
         element.type === "tel" ||
         element.type === "email" ||
-        element.type === "text"
+        element.type === "text" ||
+        element.type === "url" ||
+        element.type === "number"
       ) {
         if (element.required && element.value.trim() === "") {
           element.closest(".cmp--tf").classList.add("Error");
