@@ -29,26 +29,39 @@ document.addEventListener("DOMContentLoaded", function () {
     //console.log(formElements[i].tagName + " - " + formElements[i].type);
     const element = formElements[i];
 
+    //! TextField State Validation
     if (
       element.type === "tel" ||
       element.type === "email" ||
-      element.type === "text"
+      element.type === "text" ||
+      element.type === "url" ||
+      element.type === "number"
     ) {
+      element.addEventListener("focus", (event) => {
+        element.closest(".cmp--tf").classList.add("focus");
+      });
+
       element.addEventListener("blur", (event) => {
+        element.closest(".cmp--tf").classList.remove("focus");
         if (element.required && element.value.trim() === "") {
           //element.focus();
           element.closest(".cmp--tf").classList.add("error");
           return; // Stop submission if a required field is empty
+        } else {
+          element.closest(".cmp--tf").classList.remove("error");
         }
-        element.closest(".cmp--tf").classList.remove("error");
       });
+
       element.addEventListener("input", (event) => {
         //console.log(element.value);
         if (element.required && element.value.trim() === "") {
+          element.closest(".cmp--tf").classList.remove("filled");
           element.closest(".cmp--tf").classList.add("error");
           return; // Stop submission if a required field is empty
+        } else {
+          element.closest(".cmp--tf").classList.remove("error");
+          element.closest(".cmp--tf").classList.add("filled");
         }
-        element.closest(".cmp--tf").classList.remove("error");
       });
     }
     if (element.type === "select-one") {
