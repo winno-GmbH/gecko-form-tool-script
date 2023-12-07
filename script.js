@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
       element.addEventListener("focus", (event) => {
         element.closest(".cmp--tf").classList.remove("error");
         element.closest(".cmp--tf").classList.add("focused");
+
       });
 
       element.addEventListener("blur", (event) => {
