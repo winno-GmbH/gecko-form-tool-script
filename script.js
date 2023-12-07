@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
   for (let i = 0; i < formElements.length; i++) {
     //console.log(formElements[i].tagName + " - " + formElements[i].type);
     const element = formElements[i];
+    const elClassName = element.classList[0];
 
     //! TextField State Validation
     if (
@@ -40,33 +41,33 @@ document.addEventListener("DOMContentLoaded", function () {
       element.addEventListener("focus", (event) => {
         console.log("CLASS focused = ", element.classList[0]);
         //element.closest(".cmp--tf").classList.remove("error");
-        element.closest(".cmp--tf").classList.add("focused");
+        element.closest(".cmp--".elClassName).classList.add("focused");
       });
 
       element.addEventListener("blur", (event) => {
         console.log("CLASS blur = ", element.classList[0]);
-        element.closest(".cmp--tf").classList.remove("focused");
+        element.closest(".cmp--".elClassName).classList.remove("focused");
         if (element.required && element.value.trim() === "") {
           //element.focus();
-          element.closest(".cmp--tf").classList.add("error");
+          element.closest(".cmp--".elClassName).classList.add("error");
           return; // Stop submission if a required field is empty
         } else {
-          element.closest(".cmp--tf").classList.remove("error");
+          element.closest(".cmp--".elClassName).classList.remove("error");
         }
       });
 
       element.addEventListener("input", (event) => {
         if (element.value.trim() === "") {
-          element.closest(".cmp--tf").classList.remove("filled");
+          element.closest(".cmp--".elClassName).classList.remove("filled");
         } else {
-          element.closest(".cmp--tf").classList.add("filled");
+          element.closest(".cmp--".elClassName).classList.add("filled");
         }
 
         if (element.required && element.value.trim() === "") {
-          element.closest(".cmp--tf").classList.add("error");
+          element.closest(".cmp--".elClassName).classList.add("error");
           return; // Stop submission if a required field is empty
         } else {
-          element.closest(".cmp--tf").classList.remove("error");
+          element.closest(".cmp--".elClassName).classList.remove("error");
         }
       });
     }
