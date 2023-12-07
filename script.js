@@ -28,36 +28,63 @@ document.addEventListener("DOMContentLoaded", function () {
   for (let i = 0; i < formElements.length; i++) {
     //console.log(formElements[i].tagName + " - " + formElements[i].type);
     const element = formElements[i];
+    const elClassName = ".cmp--".element.classList[0];
 
+    //! TextField State Validation
     if (
       element.type === "tel" ||
       element.type === "email" ||
-      element.type === "text"
+      element.type === "text" ||
+      element.type === "url" ||
+      element.type === "number"
     ) {
+      element.addEventListener("focus", (event) => {
+        console.log("CLASS focused = ", element.classList[0]);
+        element.closest(elClassName).classList.remove("error");
+        element.closest(elClassName).classList.add("focused");
+      });
+
       element.addEventListener("blur", (event) => {
+        console.log("CLASS blur = ", element.classList[0]);
+        element.closest(elClassName).classList.remove("focused");
         if (element.required && element.value.trim() === "") {
           //element.focus();
-          element.closest(".cmp--tf").classList.add("error");
+          element.closest(elClassName).classList.add("error");
           return; // Stop submission if a required field is empty
+        } else {
+          element.closest(elClassName).classList.remove("error");
         }
-        element.closest(".cmp--tf").classList.remove("error");
       });
+
       element.addEventListener("input", (event) => {
-        //console.log(element.value);
-        if (element.required && element.value.trim() === "") {
-          element.closest(".cmp--tf").classList.add("error");
-          return; // Stop submission if a required field is empty
+        if (element.value.trim() === "") {
+          element.closest(elClassName).classList.remove("filled");
+        } else {
+          element.closest(elClassName).classList.add("filled");
         }
-        element.closest(".cmp--tf").classList.remove("error");
+
+        if (element.required && element.value.trim() === "") {
+          element.closest(elClassName).classList.add("error");
+          return; // Stop submission if a required field is empty
+        } else {
+          element.closest(elClassName).classList.remove("error");
+        }
       });
     }
     if (element.type === "select-one") {
       element.addEventListener("change", (event) => {
         if (element.required && element.value.trim() === "") {
-          element.closest(".cmp--sl").classList.add("error");
+          element.closest(".cmp--se").classList.add("error");
           return;
         }
-        element.closest(".cmp--sl").classList.remove("error");
+        element.closest(".cmp--se").classList.remove("error");
+      });
+      element.addEventListener("blur", (event) => {
+        if (element.required && element.value.trim() === "") {
+          element.closest(".cmp--se").classList.add("error");
+          return;
+        }
+        element.closest(".cmp--se").classList.remove("error");
       });
     }
   }
@@ -65,6 +92,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Form submit handler
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+
+    alert("Form Submit");
 
     // Get all form elements
     const formElements = form.elements;
@@ -79,7 +108,9 @@ document.addEventListener("DOMContentLoaded", function () {
       if (
         element.type === "tel" ||
         element.type === "email" ||
-        element.type === "text"
+        element.type === "text" ||
+        element.type === "url" ||
+        element.type === "number"
       ) {
         if (element.required && element.value.trim() === "") {
           element.closest(".cmp--tf").classList.add("Error");
@@ -135,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("Form Submit + Data: " + JSON.stringify(requestData));
 
-    var serverUrl = "http://68.183.68.73:5000/api/forms/submit";
+    var serverUrl = "https://68.183.68.73:5000/api/forms/submit";
 
     var requestOptions = {
       method: "POST",
@@ -147,8 +178,12 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // form.innerHTML = "<div class='mainForm'><h2>Sending data...</h2></div>";
-    document.querySelector("input[type='submit']").value =
-      document.querySelector("input[type='submit']").dataset["wait"];
+
+    const submitButton = document.querySelector("input[type='submit']");
+
+    if (submitButton) {
+      submitButton.value = submitButton.dataset["wait"];
+    }
 
     // Make the fetch request
     fetch(serverUrl, requestOptions)
@@ -163,8 +198,8 @@ document.addEventListener("DOMContentLoaded", function () {
         // Handle the successful response data
         console.log("Data sent successfully:", data);
         //form.innerHTML = "<div class='mainForm'><h2>Data was sent successfully</h2></div>";
-        document.querySelector("input[type='submit']").value = "Data was sent!";
-        document.querySelector("input[type='submit']").disabled = true;
+        submitButton.value = "Data was sent!";
+        submitButton.disabled = true;
       })
       .catch((error) => {
         // Handle errors during the fetch request
