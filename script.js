@@ -37,14 +37,14 @@ document.addEventListener("DOMContentLoaded", function () {
       element.type === "url" ||
       element.type === "number"
     ) {
-      console.log("CLASS = ", element.classList[0]);
-
       element.addEventListener("focus", (event) => {
-        element.closest(".cmp--tf").classList.remove("error");
-        element.closest(".cmp--tf").classList.add("focused");
+        console.log("CLASS focused = ", element.classList[0]);
+        //element.closest(".cmp--tf").classList.remove("error");
+        //element.closest(".cmp--tf").classList.add("focused");
       });
 
       element.addEventListener("blur", (event) => {
+        console.log("CLASS blur = ", element.classList[0]);
         element.closest(".cmp--tf").classList.remove("focused");
         if (element.required && element.value.trim() === "") {
           //element.focus();
