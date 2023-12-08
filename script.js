@@ -127,8 +127,11 @@ document.addEventListener("DOMContentLoaded", function () {
         element.type !== "reset" &&
         element.tagName !== "BUTTON"
       ) {
+        lab = element.closest("label").value;
+        console.log(lab);
+
         let newElement = {
-          label: element.dataset["name"] || element.name,
+          label: element.dataset["name"] || element.name || lab,
           value: element.value,
           type: element.type,
           variable: element.dataset?.["variable"],
@@ -169,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("Form Submit + Data: " + JSON.stringify(requestData));
 
-    var serverUrl = "https://68.183.68.73:5000/api/forms/submit";
+    var serverUrl = "http://68.183.68.73:5000/api/forms/submit";
 
     var requestOptions = {
       method: "POST",
