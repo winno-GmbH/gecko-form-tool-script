@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("v0.1.9");
+console.log("v0.1.10");
 
 // Now you can use keyParam and formParam as needed
 console.log("AccessKey: ", accessKey);
