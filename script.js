@@ -16,6 +16,9 @@ var urlParams = new URLSearchParams(scriptSrc.split("?")[1]);
 const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
+// Script Version
+console.log("v0.1.8");
+
 // Now you can use keyParam and formParam as needed
 console.log("AccessKey: ", accessKey);
 console.log("FormName: ", formName);
@@ -28,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
   for (let i = 0; i < formElements.length; i++) {
     //console.log(formElements[i].tagName + " - " + formElements[i].type);
     const element = formElements[i];
-    const elClassName = ".cmp--".element.classList[0];
+    const elClassName = ".cmp--" + element.classList[0];
 
     //! TextField State Validation
     if (
