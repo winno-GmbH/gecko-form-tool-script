@@ -127,11 +127,11 @@ document.addEventListener("DOMContentLoaded", function () {
         element.type !== "reset" &&
         element.tagName !== "BUTTON"
       ) {
-        lab = element.closest("label").value;
-        console.log(lab);
+        labelValue = element.closest("label").textContent;
+        console.log(labelValue);
 
         let newElement = {
-          label: element.dataset["name"] || element.name || lab,
+          label: element.dataset["name"] || element.name || labelValue,
           value: element.value,
           type: element.type,
           variable: element.dataset?.["variable"],
