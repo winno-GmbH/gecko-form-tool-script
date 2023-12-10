@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("v0.1.10");
+console.log("v0.1.11");
 
 // Now you can use keyParam and formParam as needed
 console.log("AccessKey: ", accessKey);
@@ -122,12 +122,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Update form data - sending all data from the form to backend point
-      if (
-        element.type !== "submit" &&
-        element.type !== "reset" &&
-        element.tagName !== "BUTTON"
-      ) {
-        labelValue = element.closest("label").textContent;
+      if (element.type !== "submit" && element.type !== "reset" && element.tagName !== "BUTTON") {
+        console.log(element);
+        console.log(element.closest("label"));
+        labelValue = element.closest("label")?.textContent;
         console.log(labelValue);
 
         let newElement = {
@@ -145,9 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (element.checked) {
             const label = element.dataset["name"] || element.name;
             if (!newFormData.find((item) => item.label === label)) {
-              const checkboxes = document.querySelectorAll(
-                `input[type="checkbox"][name="${element.name}"]`
-              );
+              const checkboxes = document.querySelectorAll(`input[type="checkbox"][name="${element.name}"]`);
 
               // Iterate over the checkboxes and concatenate their values
               const checkboxValues = Array.from(checkboxes)
