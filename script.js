@@ -33,62 +33,64 @@ document.addEventListener("DOMContentLoaded", function () {
     const element = formElements[i];
     const elClassName = ".cmp--" + element.classList[0];
 
-    //! TextField State Validation
-    if (
-      element.type === "tel" ||
-      element.type === "email" ||
-      element.type === "text" ||
-      element.type === "url" ||
-      element.type === "number"
-    ) {
-      element.addEventListener("focus", (event) => {
-        console.log("CLASS focused = ", element.classList[0]);
-        element.closest(elClassName).classList.remove("error");
-        element.closest(elClassName).classList.add("focused");
-      });
-
-      element.addEventListener("blur", (event) => {
-        console.log("CLASS blur = ", element.classList[0]);
-        element.closest(elClassName).classList.remove("focused");
-        if (element.required && element.value.trim() === "") {
-          //element.focus();
-          element.closest(elClassName).classList.add("error");
-          return; // Stop submission if a required field is empty
-        } else {
+    if (element.tagName === "input") {
+      //! TextField State Validation
+      if (
+        element.type === "tel" ||
+        element.type === "email" ||
+        element.type === "text" ||
+        element.type === "url" ||
+        element.type === "number"
+      ) {
+        element.addEventListener("focus", (event) => {
+          console.log("CLASS focused = ", element.classList[0]);
           element.closest(elClassName).classList.remove("error");
-        }
-      });
+          element.closest(elClassName).classList.add("focused");
+        });
 
-      element.addEventListener("input", (event) => {
-        if (element.value.trim() === "") {
-          element.closest(elClassName).classList.remove("filled");
-        } else {
-          element.closest(elClassName).classList.add("filled");
-        }
+        element.addEventListener("blur", (event) => {
+          console.log("CLASS blur = ", element.classList[0]);
+          element.closest(elClassName).classList.remove("focused");
+          if (element.required && element.value.trim() === "") {
+            //element.focus();
+            element.closest(elClassName).classList.add("error");
+            return; // Stop submission if a required field is empty
+          } else {
+            element.closest(elClassName).classList.remove("error");
+          }
+        });
 
-        if (element.required && element.value.trim() === "") {
-          element.closest(elClassName).classList.add("error");
-          return; // Stop submission if a required field is empty
-        } else {
-          element.closest(elClassName).classList.remove("error");
-        }
-      });
-    }
-    if (element.type === "select-one") {
-      element.addEventListener("change", (event) => {
-        if (element.required && element.value.trim() === "") {
-          element.closest(".cmp--se").classList.add("error");
-          return;
-        }
-        element.closest(".cmp--se").classList.remove("error");
-      });
-      element.addEventListener("blur", (event) => {
-        if (element.required && element.value.trim() === "") {
-          element.closest(".cmp--se").classList.add("error");
-          return;
-        }
-        element.closest(".cmp--se").classList.remove("error");
-      });
+        element.addEventListener("input", (event) => {
+          if (element.value.trim() === "") {
+            element.closest(elClassName).classList.remove("filled");
+          } else {
+            element.closest(elClassName).classList.add("filled");
+          }
+
+          if (element.required && element.value.trim() === "") {
+            element.closest(elClassName).classList.add("error");
+            return; // Stop submission if a required field is empty
+          } else {
+            element.closest(elClassName).classList.remove("error");
+          }
+        });
+      }
+      if (element.type === "select-one") {
+        element.addEventListener("change", (event) => {
+          if (element.required && element.value.trim() === "") {
+            element.closest(".cmp--se").classList.add("error");
+            return;
+          }
+          element.closest(".cmp--se").classList.remove("error");
+        });
+        element.addEventListener("blur", (event) => {
+          if (element.required && element.value.trim() === "") {
+            element.closest(".cmp--se").classList.add("error");
+            return;
+          }
+          element.closest(".cmp--se").classList.remove("error");
+        });
+      }
     }
   }
 
@@ -106,58 +108,59 @@ document.addEventListener("DOMContentLoaded", function () {
 
     for (let i = 0; i < formElements.length; i++) {
       const element = formElements[i];
-
-      // Check if the field is required and still empty
-      if (
-        element.type === "tel" ||
-        element.type === "email" ||
-        element.type === "text" ||
-        element.type === "url" ||
-        element.type === "number"
-      ) {
-        if (element.required && element.value.trim() === "") {
-          element.closest(".cmp--tf").classList.add("Error");
-          return; // Stop submission if a required field is empty
-        }
-      }
-
-      // Update form data - sending all data from the form to backend point
-      if (element.type !== "submit" && element.type !== "reset" && element.tagName !== "BUTTON") {
-        console.log(element);
-        console.log(element.closest("label"));
-        labelValue = element.closest("label")?.textContent;
-        console.log(labelValue);
-
-        let newElement = {
-          label: element.dataset["name"] || element.name || labelValue,
-          value: element.value,
-          type: element.type,
-          variable: element.dataset?.["variable"],
-        };
-
-        if (element.type === "radio") {
-          if (element.checked) {
-            newFormData.push(newElement);
+      if (element.tagName === "input") {
+        // Check if the field is required and still empty
+        if (
+          element.type === "tel" ||
+          element.type === "email" ||
+          element.type === "text" ||
+          element.type === "url" ||
+          element.type === "number"
+        ) {
+          if (element.required && element.value.trim() === "") {
+            element.closest(".cmp--tf").classList.add("Error");
+            return; // Stop submission if a required field is empty
           }
-        } else if (element.type === "checkbox") {
-          if (element.checked) {
-            const label = element.dataset["name"] || element.name;
-            if (!newFormData.find((item) => item.label === label)) {
-              const checkboxes = document.querySelectorAll(`input[type="checkbox"][name="${element.name}"]`);
+        }
 
-              // Iterate over the checkboxes and concatenate their values
-              const checkboxValues = Array.from(checkboxes)
-                .filter((checkbox) => checkbox.checked)
-                .map((checkbox) => checkbox.value)
-                .join(", ");
+        // Update form data - sending all data from the form to backend point
+        if (element.type !== "submit" && element.type !== "reset" && element.tagName !== "BUTTON") {
+          console.log(element);
+          console.log(element.closest("fieldset").closest("legend"));
+          labelValue = element.closest("label")?.textContent;
+          console.log(labelValue);
 
-              newElement.value = checkboxValues;
+          let newElement = {
+            label: element.dataset["name"] || element.name || labelValue,
+            value: element.value,
+            type: element.type,
+            variable: element.dataset?.["variable"],
+          };
 
+          if (element.type === "radio") {
+            if (element.checked) {
               newFormData.push(newElement);
             }
+          } else if (element.type === "checkbox") {
+            if (element.checked) {
+              const label = element.dataset["name"] || element.name;
+              if (!newFormData.find((item) => item.label === label)) {
+                const checkboxes = document.querySelectorAll(`input[type="checkbox"][name="${element.name}"]`);
+
+                // Iterate over the checkboxes and concatenate their values
+                const checkboxValues = Array.from(checkboxes)
+                  .filter((checkbox) => checkbox.checked)
+                  .map((checkbox) => checkbox.value)
+                  .join(", ");
+
+                newElement.value = checkboxValues;
+
+                newFormData.push(newElement);
+              }
+            }
+          } else {
+            newFormData.push(newElement);
           }
-        } else {
-          newFormData.push(newElement);
         }
       }
     }
@@ -190,10 +193,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Make the fetch request
     fetch(serverUrl, requestOptions)
       .then((response) => {
+        console.log("Response" + response);
+        console.log(response.json());
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        // console.log("Response" + response.json());
+
         return response.json();
       })
       .then((data) => {
