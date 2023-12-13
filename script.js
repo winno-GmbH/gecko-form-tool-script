@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("v0.1.12");
+console.log("v0.1.15");
 
 // Now you can use keyParam and formParam as needed
 console.log("AccessKey: ", accessKey);
@@ -26,44 +26,55 @@ console.log("FormName: ", formName);
 document.addEventListener("DOMContentLoaded", function () {
   // Form validation handler
   const form = document.querySelector("form[name='" + formName + "']");
+  // console.log(form);
   const formElements = form.elements;
 
   for (let i = 0; i < formElements.length; i++) {
-    //console.log(formElements[i].tagName + " - " + formElements[i].type);
+    // console.log(formElements[i].tagName + " - " + formElements[i].type);
     const element = formElements[i];
     const elClassName = ".cmp--" + element.classList[0];
 
-    if (element.tagName === "input") {
+    if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
       //! TextField State Validation
       if (
         element.type === "tel" ||
         element.type === "email" ||
         element.type === "text" ||
         element.type === "url" ||
-        element.type === "number"
+        element.type === "number" ||
+        element.type === "date" ||
+        element.type === "time" ||
+        element.type === "textarea"
       ) {
+        if (element.disabled) {
+          //alert("Disabled");
+          element.closest(elClassName).classList.add("disabled");
+        }
+        // console.log(element.type);
         element.addEventListener("focus", (event) => {
-          console.log("CLASS focused = ", element.classList[0]);
           element.closest(elClassName).classList.remove("error");
           element.closest(elClassName).classList.add("focused");
         });
 
         element.addEventListener("blur", (event) => {
-          console.log("CLASS blur = ", element.classList[0]);
           element.closest(elClassName).classList.remove("focused");
+
           if (element.required && element.value.trim() === "") {
-            //element.focus();
+            element.closest(elClassName).classList.remove("filled");
             element.closest(elClassName).classList.add("error");
             return; // Stop submission if a required field is empty
           } else {
             element.closest(elClassName).classList.remove("error");
+            element.closest(elClassName).classList.add("filled");
           }
         });
 
         element.addEventListener("input", (event) => {
+          // alert("1");
           if (element.value.trim() === "") {
             element.closest(elClassName).classList.remove("filled");
           } else {
+            element.closest(elClassName).style.color = "red";
             element.closest(elClassName).classList.add("filled");
           }
 
@@ -75,6 +86,25 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         });
       }
+
+      // if (element.type === "date" || element.type === "time") {
+      //   element.addEventListener("blur", (event) => {
+      //     //alert("Blur");
+      //     if (element.value.trim() === "") {
+      //       element.closest(elClassName).classList.remove("filled");
+      //     } else {
+      //       element.closest(elClassName).classList.add("filled");
+      //     }
+
+      //     if (element.required && element.value.trim() === "") {
+      //       element.closest(elClassName).classList.add("error");
+      //       return; // Stop submission if a required field is empty
+      //     } else {
+      //       element.closest(elClassName).classList.remove("error");
+      //     }
+      //   });
+      // }
+
       if (element.type === "select-one") {
         element.addEventListener("change", (event) => {
           if (element.required && element.value.trim() === "") {
@@ -92,6 +122,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
     }
+    // if (element.tagName === "TEXTAREA") {
+    //   console.log(element.type);
+    //   //alert("textArea");
+    //   if (element.disabled) {
+    //     element.closest(elClassName).classList.add("disabled");
+    //   }
+    // }
   }
 
   // Form submit handler
@@ -108,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     for (let i = 0; i < formElements.length; i++) {
       const element = formElements[i];
-      if (element.tagName === "input") {
+      if (element.tagName === "INPUT") {
         // Check if the field is required and still empty
         if (
           element.type === "tel" ||
@@ -125,10 +162,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Update form data - sending all data from the form to backend point
         if (element.type !== "submit" && element.type !== "reset" && element.tagName !== "BUTTON") {
-          console.log(element);
-          console.log(element.closest("fieldset").closest("legend"));
-          labelValue = element.closest("label")?.textContent;
-          console.log(labelValue);
+          // console.log(element);
+          // console.log(element.nextElementSibling);
+          const field = element.nextElementSibling;
+          labelValue = field.lastElementChild?.textContent;
+          // console.log(labelValue);
 
           let newElement = {
             label: element.dataset["name"] || element.name || labelValue,
@@ -136,6 +174,8 @@ document.addEventListener("DOMContentLoaded", function () {
             type: element.type,
             variable: element.dataset?.["variable"],
           };
+
+          console.log(newElement);
 
           if (element.type === "radio") {
             if (element.checked) {
@@ -171,7 +211,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     console.log("Form Submit + Data: " + JSON.stringify(requestData));
 
-    var serverUrl = "http://68.183.68.73:5000/api/forms/submit";
+    var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";    
+    // var serverUrl = "http://localhost:5000/api/forms/submit/";
 
     var requestOptions = {
       method: "POST",
@@ -193,8 +234,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Make the fetch request
     fetch(serverUrl, requestOptions)
       .then((response) => {
-        console.log("Response" + response);
-        console.log(response.json());
+        //console.log("Response" + response);
+        //console.log(response.json());
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
