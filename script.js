@@ -17,13 +17,13 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("v0.1.15");
+console.log("v0.1.16");
 
 // Now you can use keyParam and formParam as needed
 console.log("AccessKey: ", accessKey);
 console.log("FormName: ", formName);
 
-document.addEventListener("DOMContentLoaded", function () {
+// document.addEventListener("DOMContentLoaded", function () {
   // Form validation handler
   const form = document.querySelector("form[name='" + formName + "']");
   // console.log(form);
@@ -254,4 +254,4 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error during sending data:", error.message);
       });
   });
-});
+// });
