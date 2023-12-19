@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("v0.2.0");
+console.log("v0.2.2");
 
 // Now you can use keyParam and formParam as needed
 console.log("AccessKey: ", accessKey);
@@ -48,7 +48,6 @@ for (let i = 0; i < formElements.length; i++) {
         // const radios = element.closest(elClassName + "-group").querySelectorAll(elClassName);
 
         radios.forEach(function (el) {
-          // Replace 'your-class-to-remove' with the class you want to remove
           el.classList.remove("selected");
         });
 
