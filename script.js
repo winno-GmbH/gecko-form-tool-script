@@ -37,7 +37,7 @@ for (let i = 0; i < formElements.length; i++) {
   if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
     if (element.type === "radio") {
       // alert("RADIO");
-      element.addEventListener("focus", (event) => {
+      element.addEventListener("change", (event) => {
         console.log(element.value);
         // console.log(elClassName);
         // console.log(element.closest(elClassName));
@@ -55,7 +55,9 @@ for (let i = 0; i < formElements.length; i++) {
         element.closest(elClassName).classList.add("selected");
       });
 
-      element.addEventListener("blur", (event) => {
+      element.addEventListener("click", (event) => {
+        console.log("Click", element.value);
+        console.log("Click Target", event.target.value);
         // element.closest(elClassName).classList.remove("selected");
       });
     }
