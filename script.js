@@ -17,7 +17,10 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("v0.2.2");
+console.log("v0.2.5");
+
+var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
+// var serverUrl = "http://localhost:5000/api/forms/submit/";
 
 // Now you can use keyParam and formParam as needed
 console.log("AccessKey: ", accessKey);
@@ -38,14 +41,14 @@ for (let i = 0; i < formElements.length; i++) {
     if (element.type === "radio") {
       // alert("RADIO");
       element.addEventListener("change", (event) => {
-        console.log(element.value);
+        // console.log(element.value);
         // console.log(elClassName);
         // console.log(element.closest(elClassName));
         // console.log(element.closest(elClassName).nextElementSibling);
         // console.log(element.nextElementSibling);
-        console.log(element.closest(elClassName + "-group"));
+        // console.log(element.closest(elClassName + "-group"));
         // console.log(element.closest(elClassName + "-group").querySelectorAll(elClassName));
-        // const radios = element.closest(elClassName + "-group").querySelectorAll(elClassName);
+        const radios = element.closest(elClassName + "-group").querySelectorAll(elClassName);
 
         radios.forEach(function (el) {
           el.classList.remove("selected");
@@ -56,8 +59,8 @@ for (let i = 0; i < formElements.length; i++) {
       });
 
       element.addEventListener("click", (event) => {
-        console.log("Click", element.value);
-        console.log("Click Target", event.target.value);
+        // console.log("Click", element.value);
+        // console.log("Click Target", event.target.value);
         // element.closest(elClassName).classList.remove("selected");
       });
     }
@@ -254,7 +257,7 @@ form.addEventListener("submit", function (e) {
 
   console.log("Form Submit + Data: " + JSON.stringify(requestData));
 
-  var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
+  // var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
   // var serverUrl = "http://localhost:5000/api/forms/submit/";
 
   var requestOptions = {
