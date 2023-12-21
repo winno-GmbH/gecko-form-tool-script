@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("v0.2.5");
+console.log("v0.2.6");
 
 var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // var serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -39,7 +39,7 @@ for (let i = 0; i < formElements.length; i++) {
 
   if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
     if (element.type === "radio") {
-      // alert("RADIO");
+      alert("RADIO");
       element.addEventListener("change", (event) => {
         // console.log(element.value);
         // console.log(elClassName);
@@ -49,13 +49,16 @@ for (let i = 0; i < formElements.length; i++) {
         // console.log(element.closest(elClassName + "-group"));
         // console.log(element.closest(elClassName + "-group").querySelectorAll(elClassName));
         const radios = element.closest(elClassName + "-group").querySelectorAll(elClassName);
+        console.log(radios);
 
         radios.forEach(function (el) {
           el.classList.remove("selected");
         });
 
+        console.log(element.closest(elClassName));
         // element.closest(elClassName).classList.remove("error");
         element.closest(elClassName).classList.add("selected");
+        element.closest(elClassName + "-group").classList.add("selected");
       });
 
       element.addEventListener("click", (event) => {
