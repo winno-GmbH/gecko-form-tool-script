@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("v0.2.7");
+console.log("v0.2.8");
 
 var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // var serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -64,6 +64,37 @@ for (let i = 0; i < formElements.length; i++) {
         // console.log("Click", element.value);
         // console.log("Click Target", event.target.value);
         // element.closest(elClassName).classList.remove("selected");
+      });
+    }
+
+    if (element.type === "checkbox") {
+      alert("checkbox");
+      element.addEventListener("change", (event) => {
+        // console.log(element.value);
+        // console.log(elClassName);
+        // console.log(element.closest(elClassName));
+        // console.log(element.closest(elClassName).nextElementSibling);
+        // console.log(element.nextElementSibling);
+        // console.log(element.closest(elClassName + "-group"));
+        // console.log(element.closest(elClassName + "-group").querySelectorAll(elClassName));
+        // const radios = element.closest(elClassName + "-group").querySelectorAll(elClassName);
+        // console.log(radios);
+
+        console.log(event.target);
+
+        if (element.checked) {
+          console.log("Checked");
+        } else {
+          console.log("UnChecked");
+        }
+
+        // radios.forEach(function (el) {
+        //   el.classList.remove("selected");
+        // });
+
+        // console.log(element.closest(elClassName));
+        // element.closest(elClassName).classList.remove("error");
+        element.closest(elClassName).classList.add("selected");
       });
     }
 
