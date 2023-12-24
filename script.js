@@ -17,14 +17,15 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("v0.2.9");
+console.log("Current Version 0.2.10");
 
 var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // var serverUrl = "http://localhost:5000/api/forms/submit/";
 
 // Now you can use keyParam and formParam as needed
-console.log("AccessKey: ", accessKey);
-console.log("FormName: ", formName);
+
+// console.log("AccessKey: ", accessKey);
+// console.log("FormName: ", formName);
 
 // document.addEventListener("DOMContentLoaded", function () {
 
@@ -52,7 +53,7 @@ for (let i = 0; i < formElements.length; i++) {
 
     if (element.type === "checkbox") {
       element.addEventListener("change", (event) => {
-        console.log(event.target);
+        // console.log(event.target);
 
         if (element.checked) {
           element.closest(elClassName).classList.add("checked");
