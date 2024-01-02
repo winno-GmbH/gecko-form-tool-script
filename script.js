@@ -17,10 +17,10 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Current Version 0.2.13");
+console.log("Current Version 0.2.14");
 
 var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
-// var serverUrl = "http://localhost:5000/api/forms/submit/";
+//var serverUrl = "http://localhost:5000/api/forms/submit/";
 
 // Now you can use keyParam and formParam as needed
 
@@ -209,7 +209,7 @@ form.addEventListener("submit", function (e) {
   }
 
   const requestData = {
-    formData: { categories: [{ name: "Main Step", form: newFormData }] },
+    formData: { categories: [{ name: "Form Data", form: newFormData }] },
   };
 
   console.log("Form Submit + Data: " + JSON.stringify(requestData));
