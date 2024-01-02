@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Current Version 0.2.12");
+console.log("Current Version 0.2.13");
 
 var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // var serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -28,7 +28,6 @@ console.log("AccessKey: ", accessKey);
 console.log("FormName: ", formName);
 
 // document.addEventListener("DOMContentLoaded", function () {
-
 // Form validation handler
 const form = document.querySelector("form[name='" + formName + "']");
 
@@ -172,7 +171,7 @@ form.addEventListener("submit", function (e) {
       if (element.type !== "submit" && element.type !== "reset" && element.tagName !== "BUTTON") {
         const field = element.nextElementSibling;
         if (field) {
-          labelValue = field.lastElementChild?.textContent;
+          labelValue = field.lastElementChild?.textContent.trim();
         }
 
         let newElement = {
