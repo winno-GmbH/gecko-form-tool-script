@@ -1,5 +1,5 @@
 // Script Version
-console.log("Elements v0.3.2");
+console.log("Elements v0.3.3");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input");
@@ -20,16 +20,10 @@ for (let i = 0; i < inputs.length; i++) {
       });
     }
 
+    const validTypes = ["tel", "email", "text", "url", "number", "date", "time"];
+
     // TextField State Validation
-    if (
-      element.type === "tel" ||
-      element.type === "email" ||
-      element.type === "text" ||
-      element.type === "url" ||
-      element.type === "number" ||
-      element.type === "date" ||
-      element.type === "time"
-    ) {
+    if (validTypes.includes(element.type)) {
       if (element.disabled) {
         element.closest(elClassName).classList.add("disabled");
       }

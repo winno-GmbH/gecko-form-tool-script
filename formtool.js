@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Form Submit v0.3.2");
+console.log("Form Submit v0.3.3");
 
 var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // var serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -29,12 +29,6 @@ console.log("FormName: ", formName);
 // document.addEventListener("DOMContentLoaded", function () {
 // Form validation handler
 const form = document.querySelector("form[name='" + formName + "']");
-
-const customFormSubmitButton = form.querySelector("[form-type='form-submit']");
-
-customFormSubmitButton.addEventListener("click", () => {
-  form.querySelector("input[type='submit']").click();
-});
 
 const formElements = form.elements;
 
@@ -85,10 +79,7 @@ for (let i = 0; i < formElements.length; i++) {
   }
 }
 
-// Form submit handler
-form.addEventListener("submit", function (e) {
-  e.preventDefault();
-
+function submitForm() {
   // alert("Form Submit");
 
   // Get all form elements
@@ -103,18 +94,12 @@ form.addEventListener("submit", function (e) {
 
     if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
       // Check if the field is required and still empty
-      if (
-        element.type === "tel" ||
-        element.type === "email" ||
-        element.type === "text" ||
-        element.type === "url" ||
-        element.type === "number" ||
-        element.type === "date" ||
-        element.type === "time" ||
-        element.type === "textarea"
-      ) {
+      const validTypes = ["tel", "email", "text", "url", "number", "date", "time", "textarea"];
+
+      if (validTypes.includes(element.type)) {
         if (element.required && element.value.trim() === "") {
           element.closest(elClassName).classList.add("error");
+          element.focus();
           return; // Stop submission if a required field is empty
         }
       }
@@ -176,10 +161,10 @@ form.addEventListener("submit", function (e) {
     body: JSON.stringify(requestData),
   };
 
-  const submitButton = document.querySelector("input[type='submit']");
+  const submitButton = form.querySelector("[form-type='form-submit']");
 
   if (submitButton) {
-    submitButton.value = submitButton.dataset["wait"] || "Sending data ...";
+    submitButton.innerHTML = submitButton.dataset["wait"] || "Sending data ...";
   }
 
   // Make the fetch request
@@ -194,12 +179,17 @@ form.addEventListener("submit", function (e) {
     .then((data) => {
       // Handle the successful response data
       console.log("Data sent successfully:", data);
-      submitButton.value = submitButton.dataset["success"] || "Data was sent!";
-      submitButton.disabled = true;
+      submitButton.innerHTML = submitButton.dataset["success"] || "Data was sent!";
+      submitButton.classList.add("disabled");
     })
     .catch((error) => {
       // Handle errors during the fetch request
       console.error("Error during sending data:", error.message);
     });
+}
+
+const customFormSubmitButton = form.querySelector("[form-type='form-submit']");
+
+customFormSubmitButton.addEventListener("click", () => {
+  submitForm();
 });
-// });
