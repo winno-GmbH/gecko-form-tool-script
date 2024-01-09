@@ -30,6 +30,12 @@ console.log("FormName: ", formName);
 // Form validation handler
 const form = document.querySelector("form[name='" + formName + "']");
 
+const customFormSubmitButton = form.querySelector("[form-type='form-submit']");
+
+customFormSubmitButton.addEventListener("click", () => {
+  form.submit();
+});
+
 const formElements = form.elements;
 
 for (let i = 0; i < formElements.length; i++) {
