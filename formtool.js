@@ -33,7 +33,7 @@ const form = document.querySelector("form[name='" + formName + "']");
 const customFormSubmitButton = form.querySelector("[form-type='form-submit']");
 
 customFormSubmitButton.addEventListener("click", () => {
-  form.submit();
+  form.querySelector("input[type='submit']").click();
 });
 
 const formElements = form.elements;
