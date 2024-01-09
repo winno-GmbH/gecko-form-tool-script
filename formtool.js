@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Form Submit v0.3.1");
+console.log("Form Submit v0.3.2");
 
 var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // var serverUrl = "http://localhost:5000/api/forms/submit/";
