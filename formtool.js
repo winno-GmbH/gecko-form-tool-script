@@ -17,19 +17,24 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Current Version 0.2.14");
+console.log("Form Submit v0.3.2");
 
 var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
-//var serverUrl = "http://localhost:5000/api/forms/submit/";
+// var serverUrl = "http://localhost:5000/api/forms/submit/";
 
 // Now you can use keyParam and formParam as needed
-
 console.log("AccessKey: ", accessKey);
 console.log("FormName: ", formName);
 
 // document.addEventListener("DOMContentLoaded", function () {
 // Form validation handler
 const form = document.querySelector("form[name='" + formName + "']");
+
+const customFormSubmitButton = form.querySelector("[form-type='form-submit']");
+
+customFormSubmitButton.addEventListener("click", () => {
+  form.querySelector("input[type='submit']").click();
+});
 
 const formElements = form.elements;
 
@@ -38,6 +43,7 @@ for (let i = 0; i < formElements.length; i++) {
   const elClassName = ".cmp--" + element.classList[0];
 
   if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+    // RadioButton State Validation
     if (element.type === "radio") {
       element.addEventListener("change", (event) => {
         const radios = element.closest(elClassName + "-group").querySelectorAll(elClassName);
@@ -50,29 +56,8 @@ for (let i = 0; i < formElements.length; i++) {
       });
     }
 
-    if (element.type === "checkbox") {
-      element.addEventListener("change", (event) => {
-        // console.log(event.target);
-
-        if (element.checked) {
-          element.closest(elClassName).classList.add("checked");
-        } else {
-          element.closest(elClassName).classList.remove("checked");
-        }
-      });
-    }
-
-    //! TextField State Validation
-    if (
-      element.type === "tel" ||
-      element.type === "email" ||
-      element.type === "text" ||
-      element.type === "url" ||
-      element.type === "number" ||
-      element.type === "date" ||
-      element.type === "time" ||
-      element.type === "textarea"
-    ) {
+    // TextArea State Validation
+    if (element.type === "textarea") {
       if (element.disabled) {
         element.closest(elClassName).classList.add("disabled");
       }
@@ -95,38 +80,6 @@ for (let i = 0; i < formElements.length; i++) {
           element.closest(elClassName).classList.remove("error");
           element.closest(elClassName).classList.add("filled");
         }
-      });
-
-      element.addEventListener("input", (event) => {
-        if (element.value.trim() === "") {
-          element.closest(elClassName).classList.remove("filled");
-        } else {
-          element.closest(elClassName).classList.add("filled");
-        }
-
-        if (element.required && element.value.trim() === "") {
-          element.closest(elClassName).classList.add("error");
-          return; // Stop submission if a required field is empty
-        } else {
-          element.closest(elClassName).classList.remove("error");
-        }
-      });
-    }
-
-    if (element.type === "select-one") {
-      element.addEventListener("change", (event) => {
-        if (element.required && element.value.trim() === "") {
-          element.closest(".cmp--se").classList.add("error");
-          return;
-        }
-        element.closest(".cmp--se").classList.remove("error");
-      });
-      element.addEventListener("blur", (event) => {
-        if (element.required && element.value.trim() === "") {
-          element.closest(".cmp--se").classList.add("error");
-          return;
-        }
-        element.closest(".cmp--se").classList.remove("error");
       });
     }
   }
@@ -226,7 +179,7 @@ form.addEventListener("submit", function (e) {
   const submitButton = document.querySelector("input[type='submit']");
 
   if (submitButton) {
-    submitButton.value = submitButton.dataset["wait"];
+    submitButton.value = submitButton.dataset["wait"] || "Sending data ...";
   }
 
   // Make the fetch request
@@ -241,8 +194,7 @@ form.addEventListener("submit", function (e) {
     .then((data) => {
       // Handle the successful response data
       console.log("Data sent successfully:", data);
-      //form.innerHTML = "<div class='mainForm'><h2>Data was sent successfully</h2></div>";
-      submitButton.value = "Data was sent!";
+      submitButton.value = submitButton.dataset["success"] || "Data was sent!";
       submitButton.disabled = true;
     })
     .catch((error) => {

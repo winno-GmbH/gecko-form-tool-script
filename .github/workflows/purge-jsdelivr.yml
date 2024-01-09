@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Purge jsDelivr Cache
+      - name: Purge jsDelivr formtool Cache
         run: |
-          curl "https://purge.jsdelivr.net/gh/winno-GmbH/gecko-form-tool-script@main/script.js"
+          curl "https://purge.jsdelivr.net/gh/winno-GmbH/gecko-form-tool-script@main/formtool.js"
+      - name: Purge jsDelivr inputhandler Cache
+        run: |
+          curl "https://purge.jsdelivr.net/gh/winno-GmbH/gecko-form-tool-script@main/inputhandler.js"
