@@ -1,5 +1,5 @@
 // Script Version
-console.log("Elements v0.3.3");
+console.log("Elements v0.3.4");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input");
