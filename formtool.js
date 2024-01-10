@@ -178,8 +178,10 @@ function submitForm() {
     })
     .then((data) => {
       // Handle the successful response data
-      if (gtag_report_conversion) {
+      try {
         gtag_report_conversion();
+      } catch (e) {
+        console.log("gtag not found");
       }
       console.log("Data sent successfully:", data);
       submitButton.innerHTML = submitButton.dataset["success"] || "Data was sent!";
