@@ -178,6 +178,9 @@ function submitForm() {
     })
     .then((data) => {
       // Handle the successful response data
+      if (gtag_report_conversion) {
+        gtag_report_conversion();
+      }
       console.log("Data sent successfully:", data);
       submitButton.innerHTML = submitButton.dataset["success"] || "Data was sent!";
       submitButton.classList.add("disabled");
