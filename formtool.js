@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Form Submit v0.3.4");
+console.log("Form Submit v0.3.6");
 
 var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // var serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -80,8 +80,6 @@ for (let i = 0; i < formElements.length; i++) {
 }
 
 function submitForm() {
-  // alert("Form Submit");
-
   // Get all form elements
   const formElements = form.elements;
 
@@ -109,7 +107,7 @@ function submitForm() {
       if (element.type !== "submit" && element.type !== "reset" && element.tagName !== "BUTTON") {
         const field = element.nextElementSibling;
         if (field) {
-          labelValue = field.lastElementChild?.textContent.trim();
+          labelValue = field.lastElementChild?.textContent.trim().replace(/\n/g, " ").replace(/\s+/g, " ");
         }
 
         let newElement = {
@@ -178,10 +176,9 @@ function submitForm() {
     })
     .then((data) => {
       // Handle the successful response data
-      try {
+
+      if (typeof gtag_report_conversion !== "undefined") {
         gtag_report_conversion();
-      } catch (e) {
-        console.log("gtag not found");
       }
       console.log("Data sent successfully:", data);
       submitButton.innerHTML = submitButton.dataset["success"] || "Data was sent!";
