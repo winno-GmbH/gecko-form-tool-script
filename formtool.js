@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Form Submit v0.3.6");
+console.log("Form Submit v0.3.8");
 
 var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // var serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -37,19 +37,6 @@ for (let i = 0; i < formElements.length; i++) {
   const elClassName = ".cmp--" + element.classList[0];
 
   if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
-    // RadioButton State Validation
-    if (element.type === "radio") {
-      element.addEventListener("change", (event) => {
-        const radios = element.closest(elClassName + "-group").querySelectorAll(elClassName);
-
-        radios.forEach(function (el) {
-          el.classList.remove("selected");
-        });
-
-        element.closest(elClassName).classList.add("selected");
-      });
-    }
-
     // TextArea State Validation
     if (element.type === "textarea") {
       if (element.disabled) {

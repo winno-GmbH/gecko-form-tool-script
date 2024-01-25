@@ -1,5 +1,5 @@
 // Script Version
-console.log("Elements v0.3.6");
+console.log("Elements v0.3.8");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input");
@@ -20,27 +20,43 @@ for (let i = 0; i < inputs.length; i++) {
       });
     }
 
+    // RadioButton State Validation
+    if (element.type === "radio") {
+      element.addEventListener("change", (event) => {
+        const radios = element.closest(elClassName + "-group").querySelectorAll(elClassName);
+
+        radios.forEach(function (el) {
+          el.classList.remove("selected");
+        });
+
+        element.closest(elClassName).classList.add("selected");
+      });
+    }
+
     const validTypes = ["tel", "email", "text", "url", "number", "date", "time"];
 
     // TextField State Validation
-    if (validTypes.includes(element.type)) {
+    if (validTypes.includes(element.type) && !element.classList.contains("se")) {
       if (element.disabled) {
         element.closest(elClassName).classList.add("disabled");
       }
 
       element.addEventListener("focus", (event) => {
+        console.log("Focus");
         element.closest(elClassName).classList.remove("error");
         element.closest(elClassName).classList.add("focused");
+
+        hideModals();
       });
 
       element.addEventListener("blur", (event) => {
+        console.log("Blur");
+
         if (element.required && element.value.trim() === "") {
           element.closest(elClassName).classList.remove("filled");
           element.closest(elClassName).classList.add("error");
-        } else {
-          element.closest(elClassName).classList.remove("error");
-          element.closest(elClassName).classList.add("filled");
         }
+
         if (!element.classList.contains("se")) {
           element.closest(elClassName).classList.remove("focused");
         } else {
@@ -67,20 +83,10 @@ for (let i = 0; i < inputs.length; i++) {
     }
 
     if (element.type === "text" && element.classList.contains("se")) {
-      const optionsContainer = document.querySelector(".cmp--se-modal");
+      // const optionsContainer = document.querySelector(".cmp--se-modal");
 
-      const toggleOptions = function () {
-        optionsContainer.style.display = optionsContainer.style.display === "flex" ? "none" : "flex";
-        if (optionsContainer.style.display === "none") {
-          element.blur();
-        } else {
-          element.closest(elClassName).classList.add("filled");
-        }
-      };
-
-      element.addEventListener("click", toggleOptions);
-
-      const options = document.querySelectorAll(".cmp--se-option");
+      const optionsContainer = element.parentElement.parentElement.querySelector(".cmp--se-modal");
+      const options = optionsContainer.querySelectorAll(".cmp--se-option");
 
       options.forEach(function (optionElement) {
         optionElement.addEventListener("click", function (event) {
@@ -88,28 +94,68 @@ for (let i = 0; i < inputs.length; i++) {
           const dataValue = optionElement.getAttribute("data-value");
 
           if (dataValue) {
+            // console.log("VALUE = ", dataValue);
             element.value = dataValue;
-
             optionsContainer.style.display = "none";
           }
         });
       });
 
-      element.addEventListener("blur", function (event) {
-        if (element.value.trim() === "") {
-          element.closest(elClassName).classList.remove("filled");
-          element.closest(elClassName).classList.remove("error");
-        }
-      });
+      const toggleOptions = function () {
+        // optionsContainer.style.display = optionsContainer.style.display === "flex" ? "none" : "flex";
 
-      document.addEventListener("click", function (e) {
-        if (e.target !== element) {
-          optionsContainer.style.display = "none";
+        if (optionsContainer.style.display === "flex") {
+          // if (element.value.trim() === "") {
+          //   element.closest(elClassName).classList.remove("filled");
+          //   console.log(element.closest(elClassName));
+          // }
+          // element.blur();
+          // optionsContainer.style.display = "none";
+          console.log("Выключаем");
+          element.closest(elClassName).classList.remove("focused");
           if (element.value.trim() === "") {
-            element.closest(elClassName).classList.remove("focused");
+            element.closest(elClassName).classList.remove("filled");
           }
+        } else {
+          // optionsContainer.style.display = "flex";
+          console.log("Включаем");
+          element.closest(elClassName).classList.add("focused");
         }
+      };
+
+      element.addEventListener("focus", (event) => {
+        // console.log("Select Focus", element);
+        hideModals();
+
+        // console.log(element);
+
+        const optionsContainer = element.parentElement.parentElement.querySelector(".cmp--se-modal");
+        optionsContainer.style.display = "flex";
+
+        element.closest(elClassName).classList.remove("error");
+        element.closest(elClassName).classList.add("focused");
       });
     }
   }
 }
+
+document.addEventListener("click", function (e) {
+  // console.log("Closest Div", e.target.closest("div"));
+
+  // console.log("TARGET", e.target);
+  // console.log("Closest Input", e.target.closest("input"));
+
+  if (e.target.closest("div").classList.contains("container") || e.target.closest("div").classList.contains("lyt")) {
+    hideModals();
+  }
+});
+
+const hideModals = (element) => {
+  const optionsSelects = document.querySelectorAll(".cmp--se-modal");
+
+  optionsSelects.forEach((select) => {
+    // console.log("SELECT", select);
+    select.closest(".cmp--se").classList.remove("focused");
+    select.style.display = "none";
+  });
+};
