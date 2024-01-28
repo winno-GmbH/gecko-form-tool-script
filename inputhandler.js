@@ -1,8 +1,23 @@
 // Script Version
-console.log("Elements v0.3.8");
+console.log("Elements v0.4.0");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input");
+
+const hideModals = (element) => {
+  const modalOverlays = document.querySelectorAll(".el--modal-overlay");
+  modalOverlays.forEach((item) => {
+    item.style.display = "none";
+  });
+
+  const optionsSelects = document.querySelectorAll(".cmp--se-modal");
+
+  optionsSelects.forEach((select) => {
+    // console.log("SELECT", select);
+    select.closest(".cmp--se").classList.remove("focused");
+    select.style.display = "none";
+  });
+};
 
 for (let i = 0; i < inputs.length; i++) {
   const element = inputs[i];
@@ -12,6 +27,7 @@ for (let i = 0; i < inputs.length; i++) {
     // CheckBoxes State Validation
     if (element.type === "checkbox") {
       element.addEventListener("change", (event) => {
+        hideModals();
         if (element.checked) {
           element.closest(elClassName).classList.add("checked");
         } else {
@@ -23,6 +39,7 @@ for (let i = 0; i < inputs.length; i++) {
     // RadioButton State Validation
     if (element.type === "radio") {
       element.addEventListener("change", (event) => {
+        hideModals();
         const radios = element.closest(elClassName + "-group").querySelectorAll(elClassName);
 
         radios.forEach(function (el) {
@@ -42,7 +59,7 @@ for (let i = 0; i < inputs.length; i++) {
       }
 
       element.addEventListener("focus", (event) => {
-        console.log("Focus");
+        // console.log("Focus");
         element.closest(elClassName).classList.remove("error");
         element.closest(elClassName).classList.add("focused");
 
@@ -50,7 +67,7 @@ for (let i = 0; i < inputs.length; i++) {
       });
 
       element.addEventListener("blur", (event) => {
-        console.log("Blur");
+        // console.log("Blur");
 
         if (element.required && element.value.trim() === "") {
           element.closest(elClassName).classList.remove("filled");
@@ -129,11 +146,46 @@ for (let i = 0; i < inputs.length; i++) {
 
         // console.log(element);
 
+        const modalOverlay = element.parentElement.parentElement.querySelector(".el--modal-overlay");
+        if (modalOverlay) {
+          modalOverlay.style.display = "block";
+        }
+
         const optionsContainer = element.parentElement.parentElement.querySelector(".cmp--se-modal");
-        optionsContainer.style.display = "flex";
+        if (optionsContainer) {
+          optionsContainer.style.display = "flex";
+        }
 
         element.closest(elClassName).classList.remove("error");
         element.closest(elClassName).classList.add("focused");
+      });
+    }
+  }
+
+  if (element.tagName === "TEXTAREA") {
+    // TextArea State Validation
+    if (element.type === "textarea") {
+      if (element.disabled) {
+        element.closest(elClassName).classList.add("disabled");
+      }
+      element.addEventListener("focus", (event) => {
+        alert("AAA");
+        hideModals();
+        element.closest(elClassName).classList.remove("error");
+        element.closest(elClassName).classList.add("focused");
+      });
+      element.addEventListener("blur", (event) => {
+        element.closest(elClassName).classList.remove("focused");
+        if (element.required && element.value.trim() === "") {
+          element.closest(elClassName).classList.remove("filled");
+          element.closest(elClassName).classList.add("error");
+        } else if (element.value.trim() === "") {
+          element.closest(elClassName).classList.remove("filled");
+          element.closest(elClassName).classList.remove("error");
+        } else {
+          element.closest(elClassName).classList.remove("error");
+          element.closest(elClassName).classList.add("filled");
+        }
       });
     }
   }
@@ -145,17 +197,16 @@ document.addEventListener("click", function (e) {
   // console.log("TARGET", e.target);
   // console.log("Closest Input", e.target.closest("input"));
 
-  if (e.target.closest("div").classList.contains("container") || e.target.closest("div").classList.contains("lyt")) {
+  // if (e.target.closest("div").classList.contains("cm--se-modal") || e.target.closest("div").classList.contains("lyt")) {
+  if (
+    e.target.closest("div").classList.contains("container") ||
+    e.target.closest("div").classList.contains("cmp--se-modal") ||
+    e.target.closest("div").classList.contains("cd--form") ||
+    e.target.closest("div").classList.contains("el--modal-overlay") ||
+    e.target.closest("div").classList.contains("lyt--form") ||
+    e.target.closest("div").classList.contains("lyt--form-row") ||
+    e.target.closest("div").classList.contains("cmp--form-item")
+  ) {
     hideModals();
   }
 });
-
-const hideModals = (element) => {
-  const optionsSelects = document.querySelectorAll(".cmp--se-modal");
-
-  optionsSelects.forEach((select) => {
-    // console.log("SELECT", select);
-    select.closest(".cmp--se").classList.remove("focused");
-    select.style.display = "none";
-  });
-};

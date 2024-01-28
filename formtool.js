@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Form Submit v0.3.8");
+console.log("Form Submit v0.4.0");
 
 var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // var serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -38,31 +38,28 @@ for (let i = 0; i < formElements.length; i++) {
 
   if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
     // TextArea State Validation
-    if (element.type === "textarea") {
-      if (element.disabled) {
-        element.closest(elClassName).classList.add("disabled");
-      }
-
-      element.addEventListener("focus", (event) => {
-        element.closest(elClassName).classList.remove("error");
-        element.closest(elClassName).classList.add("focused");
-      });
-
-      element.addEventListener("blur", (event) => {
-        element.closest(elClassName).classList.remove("focused");
-
-        if (element.required && element.value.trim() === "") {
-          element.closest(elClassName).classList.remove("filled");
-          element.closest(elClassName).classList.add("error");
-        } else if (element.value.trim() === "") {
-          element.closest(elClassName).classList.remove("filled");
-          element.closest(elClassName).classList.remove("error");
-        } else {
-          element.closest(elClassName).classList.remove("error");
-          element.closest(elClassName).classList.add("filled");
-        }
-      });
-    }
+    // if (element.type === "textarea") {
+    //   if (element.disabled) {
+    //     element.closest(elClassName).classList.add("disabled");
+    //   }
+    //   element.addEventListener("focus", (event) => {
+    //     element.closest(elClassName).classList.remove("error");
+    //     element.closest(elClassName).classList.add("focused");
+    //   });
+    //   element.addEventListener("blur", (event) => {
+    //     element.closest(elClassName).classList.remove("focused");
+    //     if (element.required && element.value.trim() === "") {
+    //       element.closest(elClassName).classList.remove("filled");
+    //       element.closest(elClassName).classList.add("error");
+    //     } else if (element.value.trim() === "") {
+    //       element.closest(elClassName).classList.remove("filled");
+    //       element.closest(elClassName).classList.remove("error");
+    //     } else {
+    //       element.closest(elClassName).classList.remove("error");
+    //       element.closest(elClassName).classList.add("filled");
+    //     }
+    //   });
+    // }
   }
 }
 
@@ -135,7 +132,7 @@ function submitForm() {
     formData: { categories: [{ name: "Form Data", form: newFormData }] },
   };
 
-  console.log("Form Submit + Data: " + JSON.stringify(requestData));
+  console.log("Form Submit Data: " + JSON.stringify(requestData));
 
   var requestOptions = {
     method: "POST",
