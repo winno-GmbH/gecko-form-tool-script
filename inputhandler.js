@@ -1,5 +1,5 @@
 // Script Version
-console.log("Elements v0.4.0");
+console.log("Elements v0.4.1");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input");
@@ -111,9 +111,8 @@ for (let i = 0; i < inputs.length; i++) {
           const dataValue = optionElement.getAttribute("data-value");
 
           if (dataValue) {
-            // console.log("VALUE = ", dataValue);
             element.value = dataValue;
-            optionsContainer.style.display = "none";
+            hideModals();
           }
         });
       });
