@@ -17,10 +17,10 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Form Submit v0.4.0");
+console.log("Form Submit v0.4.1");
 
-var serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
-// var serverUrl = "http://localhost:5000/api/forms/submit/";
+const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
+// const serverUrl = "http://localhost:5000/api/forms/submit/";
 
 // Now you can use keyParam and formParam as needed
 console.log("AccessKey: ", accessKey);
@@ -30,38 +30,38 @@ console.log("FormName: ", formName);
 // Form validation handler
 const form = document.querySelector("form[name='" + formName + "']");
 
-const formElements = form.elements;
+// const formElements = form.elements;
 
-for (let i = 0; i < formElements.length; i++) {
-  const element = formElements[i];
-  const elClassName = ".cmp--" + element.classList[0];
+// for (let i = 0; i < formElements.length; i++) {
+//   const element = formElements[i];
+//   const elClassName = ".cmp--" + element.classList[0];
 
-  if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
-    // TextArea State Validation
-    // if (element.type === "textarea") {
-    //   if (element.disabled) {
-    //     element.closest(elClassName).classList.add("disabled");
-    //   }
-    //   element.addEventListener("focus", (event) => {
-    //     element.closest(elClassName).classList.remove("error");
-    //     element.closest(elClassName).classList.add("focused");
-    //   });
-    //   element.addEventListener("blur", (event) => {
-    //     element.closest(elClassName).classList.remove("focused");
-    //     if (element.required && element.value.trim() === "") {
-    //       element.closest(elClassName).classList.remove("filled");
-    //       element.closest(elClassName).classList.add("error");
-    //     } else if (element.value.trim() === "") {
-    //       element.closest(elClassName).classList.remove("filled");
-    //       element.closest(elClassName).classList.remove("error");
-    //     } else {
-    //       element.closest(elClassName).classList.remove("error");
-    //       element.closest(elClassName).classList.add("filled");
-    //     }
-    //   });
-    // }
-  }
-}
+//   if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+//     // TextArea State Validation
+//     // if (element.type === "textarea") {
+//     //   if (element.disabled) {
+//     //     element.closest(elClassName).classList.add("disabled");
+//     //   }
+//     //   element.addEventListener("focus", (event) => {
+//     //     element.closest(elClassName).classList.remove("error");
+//     //     element.closest(elClassName).classList.add("focused");
+//     //   });
+//     //   element.addEventListener("blur", (event) => {
+//     //     element.closest(elClassName).classList.remove("focused");
+//     //     if (element.required && element.value.trim() === "") {
+//     //       element.closest(elClassName).classList.remove("filled");
+//     //       element.closest(elClassName).classList.add("error");
+//     //     } else if (element.value.trim() === "") {
+//     //       element.closest(elClassName).classList.remove("filled");
+//     //       element.closest(elClassName).classList.remove("error");
+//     //     } else {
+//     //       element.closest(elClassName).classList.remove("error");
+//     //       element.closest(elClassName).classList.add("filled");
+//     //     }
+//     //   });
+//     // }
+//   }
+// }
 
 function submitForm() {
   // Get all form elements
@@ -128,8 +128,24 @@ function submitForm() {
     }
   }
 
+  // Function to get the value of a cookie by name
+  function getCookie(name) {
+    var cookieArray = document.cookie.split("; ");
+
+    for (var i = 0; i < cookieArray.length; i++) {
+      var cookie = cookieArray[i].split("=");
+      if (cookie[0] === name) {
+        return decodeURIComponent(cookie[1]);
+      }
+    }
+
+    return null; // Return null if the cookie with the specified name is not found
+  }
+
+  var keyword = getCookie("kwd");
+
   const requestData = {
-    formData: { categories: [{ name: "Form Data", form: newFormData }] },
+    formData: { categories: [{ name: "Form Data", form: newFormData }], keyword: keyword },
   };
 
   console.log("Form Submit Data: " + JSON.stringify(requestData));
