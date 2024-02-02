@@ -1,18 +1,17 @@
 // Script Version
 console.log("Elements v0.4.2");
 
-// Function to set a cookie
-function setCookie(name, value, daysToExpire) {
-  var expirationDate = new Date();
-  expirationDate.setDate(expirationDate.getDate() + daysToExpire);
+// // Function to set a cookie
+// function setCookie(name, value, daysToExpire) {
+//   var expirationDate = new Date();
+//   expirationDate.setDate(expirationDate.getDate() + daysToExpire);
+//   var cookieString = name + "=" + encodeURIComponent(value) + "; expires=" + expirationDate.toUTCString() + "; path=/";
 
-  var cookieString = name + "=" + encodeURIComponent(value) + "; expires=" + expirationDate.toUTCString() + "; path=/";
+//   document.cookie = cookieString;
+// }
 
-  document.cookie = cookieString;
-}
-
-// Example usage
-setCookie("kwd", "google-ads", 7);
+// // Example usage
+// setCookie("kwd", "google-ads", 7);
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input, textarea");
