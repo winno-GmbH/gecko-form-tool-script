@@ -1,8 +1,21 @@
 // Script Version
-console.log("Elements v0.4.1");
+console.log("Elements v0.4.2");
+
+// Function to set a cookie
+function setCookie(name, value, daysToExpire) {
+  var expirationDate = new Date();
+  expirationDate.setDate(expirationDate.getDate() + daysToExpire);
+
+  var cookieString = name + "=" + encodeURIComponent(value) + "; expires=" + expirationDate.toUTCString() + "; path=/";
+
+  document.cookie = cookieString;
+}
+
+// Example usage
+setCookie("kwd", "google-ads", 7);
 
 // Inputs validation handler
-const inputs = document.querySelectorAll("input");
+const inputs = document.querySelectorAll("input, textarea");
 
 const hideModals = (element) => {
   const modalOverlays = document.querySelectorAll(".el--modal-overlay");
@@ -13,7 +26,6 @@ const hideModals = (element) => {
   const optionsSelects = document.querySelectorAll(".cmp--se-modal");
 
   optionsSelects.forEach((select) => {
-    // console.log("SELECT", select);
     select.closest(".cmp--se").classList.remove("focused");
     select.style.display = "none";
   });
@@ -59,7 +71,6 @@ for (let i = 0; i < inputs.length; i++) {
       }
 
       element.addEventListener("focus", (event) => {
-        // console.log("Focus");
         element.closest(elClassName).classList.remove("error");
         element.closest(elClassName).classList.add("focused");
 
@@ -67,8 +78,6 @@ for (let i = 0; i < inputs.length; i++) {
       });
 
       element.addEventListener("blur", (event) => {
-        // console.log("Blur");
-
         if (element.required && element.value.trim() === "") {
           element.closest(elClassName).classList.remove("filled");
           element.closest(elClassName).classList.add("error");
@@ -100,10 +109,9 @@ for (let i = 0; i < inputs.length; i++) {
     }
 
     if (element.type === "text" && element.classList.contains("se")) {
-      // const optionsContainer = document.querySelector(".cmp--se-modal");
-
       const optionsContainer = element.parentElement.parentElement.querySelector(".cmp--se-modal");
       const options = optionsContainer.querySelectorAll(".cmp--se-option");
+      const clearIcon = element.closest(elClassName).querySelector(".clear-icon");
 
       options.forEach(function (optionElement) {
         optionElement.addEventListener("click", function (event) {
@@ -113,37 +121,48 @@ for (let i = 0; i < inputs.length; i++) {
           if (dataValue) {
             element.value = dataValue;
             hideModals();
+
+            clearIcon.style.display = "flex";
           }
         });
       });
 
-      const toggleOptions = function () {
-        // optionsContainer.style.display = optionsContainer.style.display === "flex" ? "none" : "flex";
+      if (clearIcon) {
+        clearIcon.addEventListener("click", function (event) {
+          const input = element.closest(elClassName).querySelector("input");
+          input.value = "";
+          clearIcon.style.display = "none";
 
-        if (optionsContainer.style.display === "flex") {
-          // if (element.value.trim() === "") {
-          //   element.closest(elClassName).classList.remove("filled");
-          //   console.log(element.closest(elClassName));
-          // }
-          // element.blur();
-          // optionsContainer.style.display = "none";
-          console.log("Выключаем");
-          element.closest(elClassName).classList.remove("focused");
-          if (element.value.trim() === "") {
-            element.closest(elClassName).classList.remove("filled");
+          const options = element.closest(elClassName).querySelectorAll(".cmp--se-option");
+
+          options.forEach((option) => {
+            // const optionText = option.textContent || option.innerText;
+
+            option.style.display = "";
+          });
+
+          const noOptions = element.closest(elClassName).querySelector(".no-options");
+          if (noOptions) {
+            noOptions.style.display = "none";
           }
-        } else {
-          // optionsContainer.style.display = "flex";
-          console.log("Включаем");
-          element.closest(elClassName).classList.add("focused");
-        }
-      };
+
+          options.forEach((option) => {
+            option.style.display = "";
+          });
+
+          if (!foundOptions) {
+            // Display the "No options found" message
+            noOptions.style.display = "block";
+          } else {
+            noOptions.style.display = "none";
+          }
+
+          element.closest(elClassName).classList.remove("filled");
+        });
+      }
 
       element.addEventListener("focus", (event) => {
-        // console.log("Select Focus", element);
         hideModals();
-
-        // console.log(element);
 
         const modalOverlay = element.parentElement.parentElement.querySelector(".el--modal-overlay");
         if (modalOverlay) {
@@ -158,53 +177,78 @@ for (let i = 0; i < inputs.length; i++) {
         element.closest(elClassName).classList.remove("error");
         element.closest(elClassName).classList.add("focused");
       });
-    }
-  }
 
-  if (element.tagName === "TEXTAREA") {
-    // TextArea State Validation
-    if (element.type === "textarea") {
-      if (element.disabled) {
-        element.closest(elClassName).classList.add("disabled");
-      }
-      element.addEventListener("focus", (event) => {
-        alert("AAA");
-        hideModals();
-        element.closest(elClassName).classList.remove("error");
-        element.closest(elClassName).classList.add("focused");
-      });
-      element.addEventListener("blur", (event) => {
-        element.closest(elClassName).classList.remove("focused");
-        if (element.required && element.value.trim() === "") {
-          element.closest(elClassName).classList.remove("filled");
-          element.closest(elClassName).classList.add("error");
-        } else if (element.value.trim() === "") {
-          element.closest(elClassName).classList.remove("filled");
-          element.closest(elClassName).classList.remove("error");
+      element.addEventListener("input", (event) => {
+        const search = event.target.value.toUpperCase();
+        const options = element.closest(elClassName).querySelectorAll(".cmp--se-option");
+        const noOptions = document.querySelector(".no-options");
+
+        let foundOptions = false;
+
+        options.forEach((option) => {
+          // const optionText = option.textContent || option.innerText;
+
+          const optionText = option.dataset.value;
+          // console.log(optionText);
+          if (search !== "") {
+            element.closest(elClassName).classList.add("filled");
+          } else {
+            element.closest(elClassName).classList.remove("filled");
+
+            const clearIcon = element.closest(elClassName).querySelector(".clear-icon");
+            clearIcon.style.display = "none";
+          }
+          if (optionText) {
+            // Variant for start with "search value"
+            if (optionText.toUpperCase().startsWith(search)) {
+              option.style.display = "";
+              foundOptions = true;
+            } else {
+              option.style.display = "none";
+            }
+          }
+        });
+
+        if (!foundOptions) {
+          // Display the "No options found" message
+          noOptions.style.display = "block";
         } else {
-          element.closest(elClassName).classList.remove("error");
-          element.closest(elClassName).classList.add("filled");
+          noOptions.style.display = "none";
         }
       });
     }
   }
+
+  // TextArea State Validation
+  if (element.type === "textarea") {
+    if (element.disabled) {
+      element.closest(elClassName).classList.add("disabled");
+    }
+    element.addEventListener("focus", (event) => {
+      element.closest(elClassName).classList.remove("error");
+      element.closest(elClassName).classList.add("focused");
+    });
+    element.addEventListener("blur", (event) => {
+      element.closest(elClassName).classList.remove("focused");
+      if (element.required && element.value.trim() === "") {
+        element.closest(elClassName).classList.remove("filled");
+        element.closest(elClassName).classList.add("error");
+      } else if (element.value.trim() === "") {
+        element.closest(elClassName).classList.remove("filled");
+        element.closest(elClassName).classList.remove("error");
+      } else {
+        element.closest(elClassName).classList.remove("error");
+        element.closest(elClassName).classList.add("filled");
+      }
+    });
+  }
 }
 
 document.addEventListener("click", function (e) {
-  // console.log("Closest Div", e.target.closest("div"));
-
-  // console.log("TARGET", e.target);
-  // console.log("Closest Input", e.target.closest("input"));
-
-  // if (e.target.closest("div").classList.contains("cm--se-modal") || e.target.closest("div").classList.contains("lyt")) {
   if (
     e.target.closest("div").classList.contains("container") ||
     e.target.closest("div").classList.contains("cmp--se-modal") ||
-    e.target.closest("div").classList.contains("cd--form") ||
-    e.target.closest("div").classList.contains("el--modal-overlay") ||
-    e.target.closest("div").classList.contains("lyt--form") ||
-    e.target.closest("div").classList.contains("lyt--form-row") ||
-    e.target.closest("div").classList.contains("cmp--form-item")
+    e.target.closest("div").classList.contains("el--modal-overlay")
   ) {
     hideModals();
   }

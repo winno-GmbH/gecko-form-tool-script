@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Form Submit v0.4.1");
+console.log("Form Submit v0.4.2");
 
 const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // const serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -63,7 +63,8 @@ const form = document.querySelector("form[name='" + formName + "']");
 //   }
 // }
 
-function submitForm() {
+function submitForm(userIp) {
+  console.log("userIp", userIp);
   // Get all form elements
   const formElements = form.elements;
 
@@ -142,10 +143,10 @@ function submitForm() {
     return null; // Return null if the cookie with the specified name is not found
   }
 
-  var keyword = getCookie("kwd");
+  let keyword = getCookie("kwd");
 
   const requestData = {
-    formData: { categories: [{ name: "Form Data", form: newFormData }], keyword: keyword },
+    formData: { categories: [{ name: "Form Data", form: newFormData }], keyword: keyword, userIp: userIp },
   };
 
   console.log("Form Submit Data: " + JSON.stringify(requestData));
@@ -193,5 +194,11 @@ function submitForm() {
 const customFormSubmitButton = form.querySelector("[form-type='form-submit']");
 
 customFormSubmitButton.addEventListener("click", () => {
-  submitForm();
+  fetch("https://api.ipify.org?format=json")
+    .then((response) => response.json())
+    .then((data) => {
+      let ipAddress = data.ip;
+      console.log("ipAdress", ipAddress);
+      submitForm(ipAddress);
+    });
 });
