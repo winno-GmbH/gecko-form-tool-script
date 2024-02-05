@@ -1,5 +1,5 @@
 // Script Version
-console.log("Elements v0.4.5");
+console.log("Elements v0.4.6");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input, textarea");
@@ -100,8 +100,9 @@ for (let i = 0; i < inputs.length; i++) {
           if (dataValue) {
             element.value = dataValue;
             hideModals();
-
-            clearIcon.classList.remove("hidden");
+            if (clearIcon) {
+              clearIcon.classList.remove("hidden");
+            }
           }
         });
       });
@@ -170,7 +171,9 @@ for (let i = 0; i < inputs.length; i++) {
 
             const clearIcon = element.closest(elClassName).querySelector(".ico--clear");
             // clearIcon.style.display = "none";
-            clearIcon.classList.add("hidden");
+            if (clearIcon) {
+              clearIcon.classList.add("hidden");
+            }
           }
           if (optionText) {
             // Variant for start with "search value"
