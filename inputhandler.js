@@ -90,7 +90,7 @@ for (let i = 0; i < inputs.length; i++) {
     if (element.type === "text" && element.classList.contains("se")) {
       const optionsContainer = element.parentElement.parentElement.querySelector(".cmp--se-modal");
       const options = optionsContainer.querySelectorAll(".cmp--se-option");
-      const clearIcon = element.closest(elClassName).querySelector(".ico--close");
+      const clearIcon = element.closest(elClassName).querySelector(".ico--clear");
 
       options.forEach(function (optionElement) {
         optionElement.addEventListener("click", function (event) {
@@ -168,7 +168,7 @@ for (let i = 0; i < inputs.length; i++) {
           } else {
             element.closest(elClassName).classList.remove("filled");
 
-            const clearIcon = element.closest(elClassName).querySelector(".ico--close");
+            const clearIcon = element.closest(elClassName).querySelector(".ico--clear");
             // clearIcon.style.display = "none";
             clearIcon.classList.add("hidden");
           }
