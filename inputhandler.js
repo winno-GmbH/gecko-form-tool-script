@@ -168,7 +168,7 @@ for (let i = 0; i < inputs.length; i++) {
           } else {
             element.closest(elClassName).classList.remove("filled");
 
-            const clearIcon = element.closest(elClassName).querySelector(".clear-icon");
+            const clearIcon = element.closest(elClassName).querySelector(".ico--close");
             // clearIcon.style.display = "none";
             clearIcon.classList.add("hidden");
           }
