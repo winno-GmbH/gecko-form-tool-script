@@ -1,5 +1,5 @@
 // Script Version
-console.log("Elements v0.4.3");
+console.log("Elements v0.4.5");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input, textarea");
@@ -69,14 +69,6 @@ for (let i = 0; i < inputs.length; i++) {
           element.closest(elClassName).classList.remove("filled");
           element.closest(elClassName).classList.add("error");
         }
-
-        if (!element.classList.contains("se")) {
-          element.closest(elClassName).classList.remove("focused");
-        } else {
-          if (element.value.trim() !== "") {
-            element.closest(elClassName).classList.remove("focused");
-          }
-        }
       });
 
       element.addEventListener("input", (event) => {
@@ -98,7 +90,7 @@ for (let i = 0; i < inputs.length; i++) {
     if (element.type === "text" && element.classList.contains("se")) {
       const optionsContainer = element.parentElement.parentElement.querySelector(".cmp--se-modal");
       const options = optionsContainer.querySelectorAll(".cmp--se-option");
-      const clearIcon = element.closest(elClassName).querySelector(".clear-icon");
+      const clearIcon = element.closest(elClassName).querySelector(".ico--close");
 
       options.forEach(function (optionElement) {
         optionElement.addEventListener("click", function (event) {
@@ -109,7 +101,7 @@ for (let i = 0; i < inputs.length; i++) {
             element.value = dataValue;
             hideModals();
 
-            clearIcon.style.display = "flex";
+            clearIcon.classList.remove("hidden");
           }
         });
       });
@@ -118,7 +110,8 @@ for (let i = 0; i < inputs.length; i++) {
         clearIcon.addEventListener("click", function (event) {
           const input = element.closest(elClassName).querySelector("input");
           input.value = "";
-          clearIcon.style.display = "none";
+          // clearIcon.style.display = "none";
+          clearIcon.classList.add("hidden");
 
           const options = element.closest(elClassName).querySelectorAll(".cmp--se-option");
 
@@ -136,13 +129,6 @@ for (let i = 0; i < inputs.length; i++) {
           options.forEach((option) => {
             option.style.display = "";
           });
-
-          if (!foundOptions) {
-            // Display the "No options found" message
-            noOptions.style.display = "block";
-          } else {
-            noOptions.style.display = "none";
-          }
 
           element.closest(elClassName).classList.remove("filled");
         });
@@ -183,7 +169,8 @@ for (let i = 0; i < inputs.length; i++) {
             element.closest(elClassName).classList.remove("filled");
 
             const clearIcon = element.closest(elClassName).querySelector(".clear-icon");
-            clearIcon.style.display = "none";
+            // clearIcon.style.display = "none";
+            clearIcon.classList.add("hidden");
           }
           if (optionText) {
             // Variant for start with "search value"
