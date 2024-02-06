@@ -1,5 +1,5 @@
 // Script Version
-console.log("Elements v0.4.6");
+console.log("Elements v0.4.7");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input, textarea");
@@ -68,6 +68,30 @@ for (let i = 0; i < inputs.length; i++) {
         if (element.required && element.value.trim() === "") {
           element.closest(elClassName).classList.remove("filled");
           element.closest(elClassName).classList.add("error");
+        }
+
+        /* Fields Validation (Email & Phone number) */
+
+        if (element.type === "email") {
+          const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+          const emailToValidate = element.value.trim();
+
+          if (!emailRegex.test(emailToValidate)) {
+            console.log("Invalid email address");
+            element.closest(elClassName).classList.add("error");
+          }
+        }
+
+        if (element.type === "tel") {
+          const telRegex = /^(\d+|\([0-9]+\))([0-9]*[-()]?){5,13}\d$/;
+
+          const telToValidate = element.value.trim().replace(/\s/g, "");
+
+          if (!telRegex.test(telToValidate)) {
+            console.log("Invalid phone");
+            element.closest(elClassName).classList.add("error");
+          }
         }
       });
 
