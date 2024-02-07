@@ -1,5 +1,5 @@
 // Script Version
-console.log("Elements v0.4.7");
+console.log("Elements v0.4.8");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input, textarea");
@@ -84,7 +84,7 @@ for (let i = 0; i < inputs.length; i++) {
         }
 
         if (element.type === "tel") {
-          const telRegex = /^(\d+|\([0-9]+\))([0-9]*[-()]?){5,13}\d$/;
+          const telRegex = /^\+?(\d+|\([0-9]+\))([0-9]*[-()]?){5,13}\d$/;
 
           const telToValidate = element.value.trim().replace(/\s/g, "");
 
