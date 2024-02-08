@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Form Submit v0.4.6");
+console.log("Form Submit v0.4.7");
 
 const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // const serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -204,7 +204,6 @@ customFormSubmitButton.addEventListener("click", () => {
     .then((response) => response.json())
     .then((data) => {
       let ipAddress = data.ip;
-      console.log("ipAdress", ipAddress);
       submitForm(ipAddress);
     });
 });
