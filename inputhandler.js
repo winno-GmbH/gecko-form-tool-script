@@ -1,5 +1,5 @@
 // Script Version
-console.log("Elements v0.4.8");
+console.log("Elements v0.4.8.1");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input, textarea");
@@ -65,6 +65,7 @@ for (let i = 0; i < inputs.length; i++) {
       });
 
       element.addEventListener("blur", (event) => {
+        element.closest(elClassName).classList.remove("focused");
         if (element.required && element.value.trim() === "") {
           element.closest(elClassName).classList.remove("filled");
           element.closest(elClassName).classList.add("error");

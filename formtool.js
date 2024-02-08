@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Form Submit v0.4.3");
+console.log("Form Submit v0.4.5");
 
 const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // const serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -64,8 +64,6 @@ const form = document.querySelector("form[name='" + formName + "']");
 // }
 
 function submitForm(userIp) {
-  console.log("userIp", userIp);
-  // Get all form elements
   const formElements = form.elements;
 
   // Create an object to store the form data
@@ -144,9 +142,17 @@ function submitForm(userIp) {
   }
 
   let keyword = getCookie("kwd");
+  let campaign = getCookie("cid");
+  let location = getCookie("loc");
 
   const requestData = {
-    formData: { categories: [{ name: "Form Data", form: newFormData }], keyword: keyword, userIp: userIp },
+    formData: {
+      categories: [{ name: "Form Data", form: newFormData }],
+      keyword: keyword,
+      camnpaign: campaign,
+      location: location,
+      userIp: userIp,
+    },
   };
 
   console.log("Form Submit Data: " + JSON.stringify(requestData));
