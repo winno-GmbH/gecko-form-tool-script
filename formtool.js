@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Form Submit v0.4.8");
+console.log("Form Submit v0.4.9");
 
 const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // const serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -180,6 +180,7 @@ function submitForm(userIp) {
 
   if (submitButton) {
     submitButton.innerHTML = submitButton.dataset["wait"] || "Sending data ...";
+    submitButton.classList.add("sending");
   }
 
   // Make the fetch request
@@ -199,6 +200,7 @@ function submitForm(userIp) {
       }
       console.log("Data sent successfully:", data);
       submitButton.innerHTML = submitButton.dataset["success"] || "Data was sent!";
+      submitButton.classList.remove("sending");
       submitButton.classList.add("disabled");
     })
     .catch((error) => {
