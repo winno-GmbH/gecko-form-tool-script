@@ -17,7 +17,7 @@ const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
 
 // Script Version
-console.log("Form Submit v0.4.9");
+console.log("Form Submit v0.4.9.1");
 
 const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // const serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -37,29 +37,29 @@ const form = document.querySelector("form[name='" + formName + "']");
 //   const elClassName = ".cmp--" + element.classList[0];
 
 //   if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
-//     // TextArea State Validation
-//     // if (element.type === "textarea") {
-//     //   if (element.disabled) {
-//     //     element.closest(elClassName).classList.add("disabled");
-//     //   }
-//     //   element.addEventListener("focus", (event) => {
-//     //     element.closest(elClassName).classList.remove("error");
-//     //     element.closest(elClassName).classList.add("focused");
-//     //   });
-//     //   element.addEventListener("blur", (event) => {
-//     //     element.closest(elClassName).classList.remove("focused");
-//     //     if (element.required && element.value.trim() === "") {
-//     //       element.closest(elClassName).classList.remove("filled");
-//     //       element.closest(elClassName).classList.add("error");
-//     //     } else if (element.value.trim() === "") {
-//     //       element.closest(elClassName).classList.remove("filled");
-//     //       element.closest(elClassName).classList.remove("error");
-//     //     } else {
-//     //       element.closest(elClassName).classList.remove("error");
-//     //       element.closest(elClassName).classList.add("filled");
-//     //     }
-//     //   });
-//     // }
+// TextArea State Validation
+// if (element.type === "textarea") {
+//   if (element.disabled) {
+//     element.closest(elClassName).classList.add("disabled");
+//   }
+//   element.addEventListener("focus", (event) => {
+//     element.closest(elClassName).classList.remove("error");
+//     element.closest(elClassName).classList.add("focused");
+//   });
+//   element.addEventListener("blur", (event) => {
+//     element.closest(elClassName).classList.remove("focused");
+//     if (element.required && element.value.trim() === "") {
+//       element.closest(elClassName).classList.remove("filled");
+//       element.closest(elClassName).classList.add("error");
+//     } else if (element.value.trim() === "") {
+//       element.closest(elClassName).classList.remove("filled");
+//       element.closest(elClassName).classList.remove("error");
+//     } else {
+//       element.closest(elClassName).classList.remove("error");
+//       element.closest(elClassName).classList.add("filled");
+//     }
+//   });
+// }
 //   }
 // }
 
