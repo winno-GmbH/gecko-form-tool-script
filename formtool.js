@@ -145,25 +145,25 @@ function submitForm(userIp) {
   let campaign = getCookie("cid");
   let location = getCookie("loc");
 
-  const requestData = {
-    formData: {
-      categories: [{ name: "Form Data", form: newFormData }],
-      keyword: keyword,
-      campaign: campaign,
-      location: location,
-      userIp: userIp,
-    },
-  };
-
   // const requestData = {
   //   formData: {
   //     categories: [{ name: "Form Data", form: newFormData }],
+  //     keyword: keyword,
+  //     campaign: campaign,
+  //     location: location,
+  //     userIp: userIp,
   //   },
-  //   keyword: keyword,
-  //   campaign: campaign,
-  //   location: location,
-  //   userIp: userIp,
   // };
+
+  const requestData = {
+    formData: {
+      categories: [{ name: "Form Data", form: newFormData }],
+    },
+    keyword: keyword,
+    campaign: campaign,
+    location: location,
+    userIp: userIp,
+  };
 
   console.log("Form Submit Data: " + JSON.stringify(requestData.formData));
 
