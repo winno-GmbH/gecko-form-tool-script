@@ -1,5 +1,5 @@
 // Script Version
-console.log("Elements v0.4.10");
+console.log("Elements v0.4.11");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input, textarea");
@@ -78,13 +78,14 @@ for (let i = 0; i < inputs.length; i++) {
 
           const emailToValidate = element.value.trim();
 
-          if (!emailRegex.test(emailToValidate)) {
+          if (emailRegex.test(emailToValidate)) {
             // console.log("Invalid email address");
-            element.closest(elClassName).classList.remove("success");
-            element.closest(elClassName).classList.add("error");
-          } else {
+
             element.closest(elClassName).classList.remove("error");
             element.closest(elClassName).classList.add("success");
+          } else {
+            element.closest(elClassName).classList.remove("success");
+            element.closest(elClassName).classList.add("error");
           }
         }
 
@@ -93,13 +94,13 @@ for (let i = 0; i < inputs.length; i++) {
 
           const telToValidate = element.value.trim().replace(/\s/g, "");
 
-          if (!telRegex.test(telToValidate)) {
+          if (telRegex.test(telToValidate)) {
             // console.log("Invalid phone");
-            element.closest(elClassName).classList.remove("success");
-            element.closest(elClassName).classList.add("error");
-          } else {
             element.closest(elClassName).classList.remove("error");
             element.closest(elClassName).classList.add("success");
+          } else {
+            element.closest(elClassName).classList.remove("success");
+            element.closest(elClassName).classList.add("error");
           }
         }
       });
