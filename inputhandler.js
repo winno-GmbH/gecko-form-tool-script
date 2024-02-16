@@ -1,5 +1,5 @@
 // Script Version
-console.log("Elements v0.4.8.1");
+console.log("Elements v0.4.10");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input, textarea");
@@ -79,8 +79,12 @@ for (let i = 0; i < inputs.length; i++) {
           const emailToValidate = element.value.trim();
 
           if (!emailRegex.test(emailToValidate)) {
-            console.log("Invalid email address");
+            // console.log("Invalid email address");
+            element.closest(elClassName).classList.remove("success");
             element.closest(elClassName).classList.add("error");
+          } else {
+            element.closest(elClassName).classList.remove("error");
+            element.closest(elClassName).classList.add("success");
           }
         }
 
@@ -90,8 +94,12 @@ for (let i = 0; i < inputs.length; i++) {
           const telToValidate = element.value.trim().replace(/\s/g, "");
 
           if (!telRegex.test(telToValidate)) {
-            console.log("Invalid phone");
+            // console.log("Invalid phone");
+            element.closest(elClassName).classList.remove("success");
             element.closest(elClassName).classList.add("error");
+          } else {
+            element.closest(elClassName).classList.remove("error");
+            element.closest(elClassName).classList.add("success");
           }
         }
       });
@@ -99,7 +107,9 @@ for (let i = 0; i < inputs.length; i++) {
       element.addEventListener("input", (event) => {
         if (element.value.trim() === "") {
           element.closest(elClassName).classList.remove("filled");
+          element.closest(elClassName).classList.remove("success");
         } else {
+          element.closest(elClassName).classList.add("success");
           element.closest(elClassName).classList.add("filled");
         }
 
@@ -241,6 +251,7 @@ for (let i = 0; i < inputs.length; i++) {
       } else {
         element.closest(elClassName).classList.remove("error");
         element.closest(elClassName).classList.add("filled");
+        element.closest(elClassName).classList.add("success");
       }
     });
   }
