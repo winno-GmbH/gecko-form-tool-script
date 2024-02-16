@@ -1,5 +1,5 @@
 // Script Version
-console.log("Elements v0.4.12");
+console.log("Elements v0.4.13");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input, textarea");
@@ -249,6 +249,7 @@ for (let i = 0; i < inputs.length; i++) {
         element.closest(elClassName).classList.add("error");
       } else if (element.value.trim() === "") {
         element.closest(elClassName).classList.remove("filled");
+        element.closest(elClassName).classList.remove("success");
         element.closest(elClassName).classList.remove("error");
       } else {
         element.closest(elClassName).classList.remove("error");
