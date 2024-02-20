@@ -18,7 +18,7 @@ const formName = urlParams.get("form");
 const captchaKey = urlParams.get("captcha-key");
 
 // Script Version
-console.log("Form Submit v0.4.9.3");
+console.log("Form Submit v0.4.9.4");
 
 const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // const serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -217,8 +217,8 @@ function submitForm(userIp) {
   };
 
   if (captchaKey && grecaptcha) {
-    grecaptcha.ready(function () {
-      grecaptcha.execute(captchaKey, { action: "submit" }).then(function (token) {
+    grecaptcha.enterprise.ready(function () {
+      grecaptcha.enterprise.execute(captchaKey, { action: "submit" }).then(function (token) {
         submit();
       });
     });
