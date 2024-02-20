@@ -15,9 +15,10 @@ var urlParams = new URLSearchParams(scriptSrc.split("?")[1]);
 // Access the 'key' and 'form' parameters
 const accessKey = urlParams.get("key");
 const formName = urlParams.get("form");
+const captchaKey = urlParams.get("captcha-key");
 
 // Script Version
-console.log("Form Submit v0.4.9.2");
+console.log("Form Submit v0.4.9.3");
 
 const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // const serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -183,35 +184,47 @@ function submitForm(userIp) {
     submitButton.classList.add("sending");
   }
 
-  // Make the fetch request
-  fetch(serverUrl, requestOptions)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+  const submit = () => {
+    // Make the fetch request
+    fetch(serverUrl, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
 
-      return response.json();
-    })
-    .then((data) => {
-      // Handle the successful response data
+        return response.json();
+      })
+      .then((data) => {
+        // Handle the successful response data
 
-      if (typeof gtag_report_conversion !== "undefined") {
-        gtag_report_conversion();
-      }
-      if (dataLayer) {
-        dataLayer.push({
-          event: "form_conversion",
-        });
-      }
-      console.log("Data sent successfully:", data);
-      submitButton.innerHTML = submitButton.dataset["success"] || "Data was sent!";
-      submitButton.classList.remove("sending");
-      submitButton.classList.add("disabled");
-    })
-    .catch((error) => {
-      // Handle errors during the fetch request
-      console.error("Error during sending data:", error.message);
+        if (typeof gtag_report_conversion !== "undefined") {
+          gtag_report_conversion();
+        }
+        if (dataLayer) {
+          dataLayer.push({
+            event: "form_conversion",
+          });
+        }
+        console.log("Data sent successfully:", data);
+        submitButton.innerHTML = submitButton.dataset["success"] || "Data was sent!";
+        submitButton.classList.remove("sending");
+        submitButton.classList.add("disabled");
+      })
+      .catch((error) => {
+        // Handle errors during the fetch request
+        console.error("Error during sending data:", error.message);
+      });
+  };
+
+  if (captchaKey && grecaptcha) {
+    grecaptcha.ready(function () {
+      grecaptcha.execute(captchaKey, { action: "submit" }).then(function (token) {
+        submit();
+      });
     });
+  } else {
+    submit();
+  }
 }
 
 const customFormSubmitButton = form.querySelector("[form-type='form-submit']");
