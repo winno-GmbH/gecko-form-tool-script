@@ -230,8 +230,8 @@ function submitForm(userIp) {
   // console.log("Before");
   if (captchaKey && grecaptcha) {
     // if (captchaKey) {
-    grecaptcha.ready(function () {
-      grecaptcha.execute(captchaKey, { action: "submit" }).then(function (token) {
+    grecaptcha.enterprise.ready(function () {
+      grecaptcha.enterprise.execute(captchaKey, { action: "submit" }).then(function (token) {
         submit(token);
         console.log("Token", token);
       });
