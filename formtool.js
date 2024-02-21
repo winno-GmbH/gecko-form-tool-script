@@ -18,14 +18,15 @@ const formName = urlParams.get("form");
 const captchaKey = urlParams.get("captcha-key");
 
 // Script Version
-console.log("Form Submit v0.4.9.3");
+console.log("Form Submit v0.4.9.6");
 
-const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
-// const serverUrl = "http://localhost:5000/api/forms/submit/";
+// const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
+const serverUrl = "http://localhost:5000/api/forms/submit/";
 
 // Now you can use keyParam and formParam as needed
 console.log("AccessKey: ", accessKey);
 console.log("FormName: ", formName);
+console.log("CaptchaKey: ", captchaKey);
 
 // document.addEventListener("DOMContentLoaded", function () {
 // Form validation handler
@@ -168,14 +169,14 @@ function submitForm(userIp) {
 
   console.log("Form Submit Data: " + JSON.stringify(requestData.formData));
 
-  var requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      AccessKey: accessKey, // Include the AccessKey in the Request header
-    },
-    body: JSON.stringify(requestData),
-  };
+  // var requestOptions = {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     AccessKey: accessKey, // Include the AccessKey in the Request header
+  //   },
+  //   body: JSON.stringify(requestData),
+  // };
 
   const submitButton = form.querySelector("[form-type='form-submit']");
 
@@ -184,7 +185,18 @@ function submitForm(userIp) {
     submitButton.classList.add("sending");
   }
 
-  const submit = () => {
+  const submit = (token = "") => {
+    requestData.token = token;
+
+    var requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        AccessKey: accessKey, // Include the AccessKey in the Request header
+      },
+      body: JSON.stringify(requestData),
+    };
+
     // Make the fetch request
     fetch(serverUrl, requestOptions)
       .then((response) => {
@@ -215,16 +227,19 @@ function submitForm(userIp) {
         console.error("Error during sending data:", error.message);
       });
   };
-
+  // console.log("Before");
   if (captchaKey && grecaptcha) {
+    // if (captchaKey) {
     grecaptcha.ready(function () {
       grecaptcha.execute(captchaKey, { action: "submit" }).then(function (token) {
-        submit();
+        submit(token);
+        console.log("Token", token);
       });
     });
   } else {
     submit();
   }
+  // console.log("After");
 }
 
 const customFormSubmitButton = form.querySelector("[form-type='form-submit']");
