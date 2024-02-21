@@ -20,8 +20,8 @@ const captchaKey = urlParams.get("captcha-key");
 // Script Version
 console.log("Form Submit v0.4.9.6");
 
-// const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
-const serverUrl = "http://localhost:5000/api/forms/submit/";
+const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
+// const serverUrl = "http://localhost:5000/api/forms/submit/";
 
 // Now you can use keyParam and formParam as needed
 console.log("AccessKey: ", accessKey);
