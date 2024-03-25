@@ -18,7 +18,7 @@ const formName = urlParams.get("form");
 const captchaKey = urlParams.get("captcha-key");
 
 // Script Version
-console.log("Form Submit v0.4.9.6");
+console.log("Form Submit v0.4.14.5");
 
 const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 // const serverUrl = "http://localhost:5000/api/forms/submit/";
@@ -66,7 +66,10 @@ const form = document.querySelector("form[name='" + formName + "']");
 // }
 
 function submitForm(userIp) {
+  // alert("Submit");
   const formElements = form.elements;
+
+  const submitButton = form.querySelector("[form-type='form-submit']");
 
   // Create an object to store the form data
   const newFormData = [];
@@ -178,8 +181,6 @@ function submitForm(userIp) {
   //   body: JSON.stringify(requestData),
   // };
 
-  const submitButton = form.querySelector("[form-type='form-submit']");
-
   if (submitButton) {
     submitButton.innerHTML = submitButton.dataset["wait"] || "Sending data ...";
     submitButton.classList.add("sending");
@@ -212,7 +213,13 @@ function submitForm(userIp) {
         if (typeof gtag_report_conversion !== "undefined") {
           gtag_report_conversion();
         }
-        if (dataLayer) {
+        // if (isset(dataLayer)) {
+        //   dataLayer.push({
+        //     event: "form_conversion",
+        //   });
+        // }
+
+        if (typeof dataLayer !== "undefined") {
           dataLayer.push({
             event: "form_conversion",
           });
@@ -220,15 +227,16 @@ function submitForm(userIp) {
         console.log("Data sent successfully:", data);
         submitButton.innerHTML = submitButton.dataset["success"] || "Data was sent!";
         submitButton.classList.remove("sending");
-        submitButton.classList.add("disabled");
+        // submitButton.classList.add("disabled");
       })
       .catch((error) => {
         // Handle errors during the fetch request
         console.error("Error during sending data:", error.message);
       });
   };
-  // console.log("Before");
-  if (captchaKey && grecaptcha) {
+
+  if (captchaKey && typeof grecaptcha !== "undefined") {
+    // if (captchaKey && grecaptcha) {
     // if (captchaKey) {
     grecaptcha.enterprise.ready(function () {
       grecaptcha.enterprise.execute(captchaKey, { action: "submit" }).then(function (token) {
@@ -239,16 +247,21 @@ function submitForm(userIp) {
   } else {
     submit();
   }
-  // console.log("After");
 }
 
 const customFormSubmitButton = form.querySelector("[form-type='form-submit']");
 
 customFormSubmitButton.addEventListener("click", () => {
-  fetch("https://api.ipify.org?format=json")
-    .then((response) => response.json())
-    .then((data) => {
-      let ipAddress = data.ip;
-      submitForm(ipAddress);
-    });
+  customFormSubmitButton.classList.add("disabled");
+  try {
+    fetch("https://api.ipify.org?format=json")
+      .then((response) => response.json())
+      .then((data) => {
+        let ipAddress = data.ip;
+        submitForm(ipAddress);
+      });
+  } catch (error) {
+    console.error("There was an error:", error);
+    submitForm("ip not detected");
+  }
 });

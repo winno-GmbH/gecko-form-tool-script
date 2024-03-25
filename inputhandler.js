@@ -1,5 +1,5 @@
 // Script Version
-console.log("Elements v0.4.13");
+console.log("Elements v0.4.14");
 
 // Inputs validation handler
 const inputs = document.querySelectorAll("input, textarea");
@@ -262,9 +262,10 @@ for (let i = 0; i < inputs.length; i++) {
 
 document.addEventListener("click", function (e) {
   if (
-    e.target.closest("div").classList.contains("container") ||
-    e.target.closest("div").classList.contains("cmp--se-modal") ||
-    e.target.closest("div").classList.contains("el--modal-overlay")
+    e.target.closest("div") &&
+    (e.target.closest("div").classList.contains("container") ||
+      e.target.closest("div").classList.contains("cmp--se-modal") ||
+      e.target.closest("div").classList.contains("el--modal-overlay"))
   ) {
     hideModals();
   }
