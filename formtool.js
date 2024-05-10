@@ -20,9 +20,9 @@ const captchaKey = urlParams.get("captcha-key");
 // Script Version
 console.log("Form Submit v0.4.15");
 
-// const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
+const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 
-const serverUrl = "https://form-tool-be.vercel.app/api/forms/submit";
+// const serverUrl = "https://form-tool-be.vercel.app/api/forms/submit";
 // const serverUrl = "http://localhost:5000/api/forms/submit/";
 
 // Now you can use keyParam and formParam as needed
@@ -239,7 +239,6 @@ function submitForm(userIp) {
 
   if (captchaKey && typeof grecaptcha !== "undefined") {
     // if (captchaKey && grecaptcha) {
-    // if (captchaKey) {
     grecaptcha.enterprise.ready(function () {
       grecaptcha.enterprise.execute(captchaKey, { action: "submit" }).then(function (token) {
         submit(token);
