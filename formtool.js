@@ -18,15 +18,17 @@ const formName = urlParams.get("form");
 const captchaKey = urlParams.get("captcha-key");
 
 // Script Version
-console.log("Form Submit v0.4.14.5");
+console.log("Form Submit v0.4.15");
 
-const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
+// const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
+
+const serverUrl = "https://form-tool-be.vercel.app/api/forms/submit";
 // const serverUrl = "http://localhost:5000/api/forms/submit/";
 
 // Now you can use keyParam and formParam as needed
-console.log("AccessKey: ", accessKey);
-console.log("FormName: ", formName);
-console.log("CaptchaKey: ", captchaKey);
+// console.log("AccessKey: ", accessKey);
+// console.log("FormName: ", formName);
+// console.log("CaptchaKey: ", captchaKey);
 
 // document.addEventListener("DOMContentLoaded", function () {
 // Form validation handler
