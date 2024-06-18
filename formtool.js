@@ -18,7 +18,7 @@ const formName = urlParams.get("form");
 const captchaKey = urlParams.get("captcha-key");
 
 // Script Version
-console.log("Form Submit v0.4.17");
+console.log("Form Submit v0.4.18");
 
 const serverUrl = "https://gecko-form-be.winno.gmbh/api/forms/submit";
 
@@ -199,6 +199,12 @@ function submitForm(userIp) {
       },
       body: JSON.stringify(requestData),
     };
+
+    try {
+      fbq("track", "Lead");
+    } catch (error) {
+      console.log("fb not initialized");
+    }
 
     // Make the fetch request
     fetch(serverUrl, requestOptions)
